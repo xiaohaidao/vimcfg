@@ -277,7 +277,7 @@ if g:isGUI
 endif
 
 " -----------------------------------------------------------------------------
-"  < 编译、连接、运行配置 (目前只配置了C、C++、Java语言)>
+"  < 编译、连接、运行配置 (目前只配置了C、C++、Java语言、python)> 
 " -----------------------------------------------------------------------------
 " F9 一键保存、编译、连接存并运行
 nmap <F9> :call Run()<CR>
@@ -460,54 +460,61 @@ func! Link()
 endfunc
 
 func! Run()
-    let s:ShowWarning = 0
-    call Link()
-    let s:ShowWarning = 1
-    if s:Sou_Error || s:LastShellReturn_C != 0 || s:LastShellReturn_L != 0
-        return
-    endif
-    let Sou = expand("%:p")
-    if expand("%:e") == "c" || expand("%:e") == "cpp" || expand("%:e") == "cxx"
-        let Obj = expand("%:p:r").s:Obj_Extension
-        if g:iswindows
-            let Exe = expand("%:p:r").s:Exe_Extension
-        else
-            let Exe = expand("%:p:r")
+    if &filetype == "python"
+        exe ":ccl"
+        exe ":update"
+        exe ":!/usr/bin/env python %"
+    else
+        let s:ShowWarning = 0
+        call Link()
+        let s:ShowWarning = 1
+        if s:Sou_Error || s:LastShellReturn_C != 0 || s:LastShellReturn_L != 0
+            return
         endif
-        if executable(Exe) && getftime(Exe) >= getftime(Obj) && getftime(Obj) >= getftime(Sou)
-            redraw!
-            echohl WarningMsg | echo " running..."
+        let Sou = expand("%:p")
+        if expand("%:e") == "c" || expand("%:e") == "cpp" || expand("%:e") == "cxx"
+            let Obj = expand("%:p:r").s:Obj_Extension
             if g:iswindows
-                exe ":!%<.exe"
+                let Exe = expand("%:p:r").s:Exe_Extension
             else
-                if g:isGUI
-                    exe ":!gnome-terminal -x bash -c './%<; echo; echo 请按 Enter 键继续; read'"
-                else
-                    exe ":!clear; ./%<"
-                endif
+                let Exe = expand("%:p:r")
             endif
-            redraw!
-            echohl WarningMsg | echo " running finish"
-        endif
-    elseif expand("%:e") == "java"
-        let class = expand("%:p:r").s:Class_Extension
-        if getftime(class) >= getftime(Sou)
-            redraw!
-            echohl WarningMsg | echo " running..."
-            if g:iswindows
-                exe ":!java %<"
-            else
-                if g:isGUI
-                    exe ":!gnome-terminal -x bash -c 'java %<; echo; echo 请按 Enter 键继续; read'"
+            if executable(Exe) && getftime(Exe) >= getftime(Obj) && getftime(Obj) >= getftime(Sou)
+                redraw!
+                echohl WarningMsg | echo " running..."
+                if g:iswindows
+                    exe ":!%<.exe"
                 else
-                    exe ":!clear; java %<"
+                    if g:isGUI
+                        exe ":!gnome-terminal -x bash -c './%<; echo; echo 请按 Enter 键继续; read'"
+                    else
+                        exe ":!clear; ./%<"
+                    endif
                 endif
+                redraw!
+                echohl WarningMsg | echo " running finish"
             endif
-            redraw!
-            echohl WarningMsg | echo " running finish"
+        elseif expand("%:e") == "java"
+            let class = expand("%:p:r").s:Class_Extension
+            if getftime(class) >= getftime(Sou)
+                redraw!
+                echohl WarningMsg | echo " running..."
+                if g:iswindows
+                    exe ":!java %<"
+                else
+                    if g:isGUI
+                        exe ":!gnome-terminal -x bash -c 'java %<; echo; echo 请按 Enter 键继续; read'"
+                    else
+                        exe ":!clear; java %<"
+                    endif
+                endif
+                redraw!
+                echohl WarningMsg | echo " running finish"
+            endif
         endif
     endif
 endfunc
+
 
 
 " -----------------------------------------------------------------------------
