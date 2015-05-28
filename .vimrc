@@ -1,7 +1,7 @@
 " =============================================================================
 "        << 判断操作系统是 Windows 还是 Linux 和判断是终端还是 Gvim >>
 " =============================================================================
- 
+
 " -----------------------------------------------------------------------------
 "  < 判断操作系统是否是 Windows 还是 Linux >
 " -----------------------------------------------------------------------------
@@ -12,7 +12,7 @@ if(has("win32") || has("win64") || has("win95") || has("win16"))
 else
     let g:islinux = 1
 endif
- 
+
 " -----------------------------------------------------------------------------
 "  < 判断是终端还是 Gvim >
 " -----------------------------------------------------------------------------
@@ -21,7 +21,7 @@ if has("gui_running")
 else
     let g:isGUI = 0
 endif
- 
+
 " =============================================================================
 "                          << 其它 >>
 " =============================================================================
@@ -30,11 +30,11 @@ endif
 " 秒内，而<Leader>cs是先按"\"键再按"c"又再按"s"键；如要修改"<leader>"键，可以把
 " 下面的设置取消注释，并修改双引号中的键为你想要的，如修改为逗号键。
 let mapleader = ","
- 
+
 " =============================================================================
 "                          << 以下为软件默认配置 >>
 " =============================================================================
- 
+
 " -----------------------------------------------------------------------------
 "  < Windows Gvim 默认配置> 做了一点修改
 " -----------------------------------------------------------------------------
@@ -43,7 +43,7 @@ if (g:iswindows && g:isGUI)
     source $VIMRUNTIME/mswin.vim
     behave mswin
     set diffexpr=MyDiff()
- 
+
     function MyDiff()
         let opt = '-a --binary '
         if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
@@ -68,20 +68,20 @@ if (g:iswindows && g:isGUI)
         silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
     endfunction
 endif
- 
+
 " -----------------------------------------------------------------------------
 "  < Linux Gvim/Vim 默认配置> 做了一点修改
 " -----------------------------------------------------------------------------
 if g:islinux
     set hlsearch        "高亮搜索
     set incsearch       "在输入要搜索的文字时，实时匹配
- 
+
     " Uncomment the following to have Vim jump to the last position when
     " reopening a file
     if has("autocmd")
         au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
     endif
- 
+
     if g:isGUI
         " Source a global configuration file if available
         if filereadable("/etc/vim/gvimrc.local")
@@ -91,29 +91,29 @@ if g:islinux
         " This line should not be removed as it ensures that various options are
         " properly set to work with the Vim-related packages available in Debian.
         runtime! debian.vim
- 
+
         " Vim5 and later versions support syntax highlighting. Uncommenting the next
         " line enables syntax highlighting by default.
         if has("syntax")
             syntax on
         endif
- 
+
         set mouse=a                    " 在任何模式下启用鼠标
         set t_Co=256                   " 在终端启用256色
         set backspace=2                " 设置退格键可用
- 
+
         " Source a global configuration file if available
         if filereadable("/etc/vim/vimrc.local")
             source /etc/vim/vimrc.local
         endif
     endif
 endif
- 
- 
+
+
 " =============================================================================
 "                          << 以下为用户自定义配置 >>
 " =============================================================================
- 
+
 " -----------------------------------------------------------------------------
 "  < Vundle 插件管理工具配置 >
 " -----------------------------------------------------------------------------
@@ -121,10 +121,10 @@ endif
 " Vundle工具安装方法为在终端输入如下命令
 " git clone https://github.com/gmarik/vundle.vim.git ~/.vim/bundle/vundle.vim
 " 如果想在 windows 安装就必需先安装 "git for window"，可查阅网上资料
- 
+
 set nocompatible                                      "禁用 Vi 兼容模式
 filetype off                                          "禁用文件类型侦测
- 
+
 if g:islinux
     set rtp+=~/.vim/bundle/vundle.vim
     call vundle#begin()
@@ -132,10 +132,10 @@ else
     set rtp+=$VIM/vimfiles/bundle/vundle.vim
     call vundle#begin('$VIM/vimfiles/bundle/')
 endif
- 
+
 " 使用Vundle来管理插件，这个必须要有。
 Plugin 'gmarik/vundle.vim'
- 
+
 " 以下为要安装或更新的插件，不同仓库都有（具体书写规范请参考帮助）
 " General Programming
 " {
@@ -170,20 +170,20 @@ filetype plugin indent on
 set encoding=utf-8                                    "设置gvim内部编码，默认不更改
 set fileencoding=utf-8                                "设置当前文件编码，可以更改，如：gbk（同cp936）
 set fileencodings=ucs-bom,utf-8,gbk,cp936,latin-1     "设置支持打开的文件的编码
- 
+
 " 文件格式，默认 ffs=dos,unix
 set fileformat=unix                                   "设置新（当前）文件的<EOL>格式，可以更改，如：dos（windows系统常用）
 set fileformats=unix,dos,mac                          "给出文件的<EOL>格式类型
- 
+
 if (g:iswindows && g:isGUI)
     "解决菜单乱码
     source $VIMRUNTIME/delmenu.vim
     source $VIMRUNTIME/menu.vim
- 
+
     "解决consle输出乱码
     language messages zh_CN.utf-8
 endif
- 
+
 " -----------------------------------------------------------------------------
 "  < 编写文件时的配置 >
 " -----------------------------------------------------------------------------
@@ -198,38 +198,38 @@ set smarttab                                          "指定按一次backspace�
 set foldenable                                        "启用折叠
 "set foldmethod=indent                                "indent 折叠方式
 set foldmethod=marker                                 "marker 折叠方式
- 
+
 " 常规模式下用空格键来开关光标行所在折叠（注：zR 展开所有折叠，zM 关闭所有折叠）
 nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
- 
+
 " 当文件在外部被修改，自动更新该文件
 set autoread
- 
+
 " 常规模式下输入 cS 清除行尾空格
 nmap cS :%s/\s\+$//g<CR>:noh<CR>
- 
+
 " 常规模式下输入 cM 清除行尾 ^M 符号
 nmap cM :%s/\r$//g<CR>:noh<CR>
- 
+
 set ignorecase                                        "搜索模式里忽略大小写
 set smartcase                                         "如果搜索模式包含大写字符，不使用 'ignorecase' 选项，只有在输入搜索模式并且打开 'ignorecase' 选项时才会使用
 " set noincsearch                                       "在输入要搜索的文字时，取消实时匹配
- 
+
 " Ctrl + K 插入模式下光标向上移动
 imap <c-k> <Up>
- 
+
 " Ctrl + J 插入模式下光标向下移动
 imap <c-j> <Down>
- 
+
 " Ctrl + H 插入模式下光标向左移动
 imap <c-h> <Left>
- 
+
 " Ctrl + L 插入模式下光标向右移动
 imap <c-l> <Right>
- 
+
 " 启用每行超过80列的字符提示（字体变蓝并加下划线），不启用就注释掉
 au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
- 
+
 " -----------------------------------------------------------------------------
 "  < 界面配置 >
 " -----------------------------------------------------------------------------
@@ -240,14 +240,14 @@ set cursorline                                        "突出显示当前行
 " set guifont=YaHei_Consolas_Hybrid:h10                 "设置字体:字号（字体名称空格用下划线代替）
 set nowrap                                            "设置不自动换行
 set shortmess=atI                                     "去掉欢迎界面
- 
+
 " 设置 gVim 窗口初始位置及大小
 if g:isGUI
     " au GUIEnter * simalt ~x                           "窗口启动时自动最大化
     winpos 100 10                                     "指定窗口出现的位置，坐标原点在屏幕左上角
     set lines=38 columns=120                          "指定窗口大小，lines为高度，columns为宽度
 endif
- 
+
 " 设置代码配色方案
 colorscheme molokai                 "molokai配色插件开启
 
@@ -264,33 +264,33 @@ if g:isGUI
     set guioptions-=r
     set guioptions-=L
     nmap <silent> <c-F11> :if &guioptions =~# 'm' <Bar>
-        \set guioptions-=m <Bar>
-        \set guioptions-=T <Bar>
-        \set guioptions-=r <Bar>
-        \set guioptions-=L <Bar>
-    \else <Bar>
-        \set guioptions+=m <Bar>
-        \set guioptions+=T <Bar>
-        \set guioptions+=r <Bar>
-        \set guioptions+=L <Bar>
-    \endif<CR>
+                \set guioptions-=m <Bar>
+                \set guioptions-=T <Bar>
+                \set guioptions-=r <Bar>
+                \set guioptions-=L <Bar>
+                \else <Bar>
+                \set guioptions+=m <Bar>
+                \set guioptions+=T <Bar>
+                \set guioptions+=r <Bar>
+                \set guioptions+=L <Bar>
+                \endif<CR>
 endif
- 
+
 " -----------------------------------------------------------------------------
-"  < 编译、连接、运行配置 (目前只配置了C、C++、Java语言)>
+"  < 编译、连接、运行配置 (目前只配置了C、C++、Java语言、python)> 
 " -----------------------------------------------------------------------------
 " F9 一键保存、编译、连接存并运行
 nmap <F9> :call Run()<CR>
 imap <F9> <ESC>:call Run()<CR>
- 
+
 " Ctrl + F9 一键保存并编译
 nmap <c-F9> :call Compile()<CR>
 imap <c-F9> <ESC>:call Compile()<CR>
- 
+
 " Ctrl + F10 一键保存并连接
 nmap <c-F10> :call Link()<CR>
 imap <c-F10> <ESC>:call Link()<CR>
- 
+
 let s:LastShellReturn_C = 0
 let s:LastShellReturn_L = 0
 let s:ShowWarning = 1
@@ -298,15 +298,15 @@ let s:Obj_Extension = '.o'
 let s:Exe_Extension = '.exe'
 let s:Class_Extension = '.class'
 let s:Sou_Error = 0
- 
+
 let s:windows_CFlags = 'gcc\ -fexec-charset=gbk\ -Wall\ -g\ -O0\ -c\ %\ -o\ %<.o'
 let s:linux_CFlags = 'gcc\ -Wall\ -g\ -O0\ -c\ %\ -o\ %<.o'
- 
+
 let s:windows_CPPFlags = 'g++\ -fexec-charset=gbk\ -Wall\ -g\ -O0\ -c\ %\ -o\ %<.o'
 let s:linux_CPPFlags = 'g++\ -Wall\ -g\ -O0\ -c\ %\ -o\ %<.o'
- 
+
 let s:JavaFlags = 'javac\ %'
- 
+
 func! Compile()
     exe ":ccl"
     exe ":update"
@@ -398,7 +398,7 @@ func! Compile()
     endif
     exe ":setlocal makeprg=make"
 endfunc
- 
+
 func! Link()
     call Compile()
     if s:Sou_Error || s:LastShellReturn_C != 0
@@ -458,71 +458,78 @@ func! Link()
         return
     endif
 endfunc
- 
+
 func! Run()
-    let s:ShowWarning = 0
-    call Link()
-    let s:ShowWarning = 1
-    if s:Sou_Error || s:LastShellReturn_C != 0 || s:LastShellReturn_L != 0
-        return
-    endif
-    let Sou = expand("%:p")
-    if expand("%:e") == "c" || expand("%:e") == "cpp" || expand("%:e") == "cxx"
-        let Obj = expand("%:p:r").s:Obj_Extension
-        if g:iswindows
-            let Exe = expand("%:p:r").s:Exe_Extension
-        else
-            let Exe = expand("%:p:r")
+    if &filetype == "python"
+        exe ":ccl"
+        exe ":update"
+        exe ":!/usr/bin/env python %"
+    else
+        let s:ShowWarning = 0
+        call Link()
+        let s:ShowWarning = 1
+        if s:Sou_Error || s:LastShellReturn_C != 0 || s:LastShellReturn_L != 0
+            return
         endif
-        if executable(Exe) && getftime(Exe) >= getftime(Obj) && getftime(Obj) >= getftime(Sou)
-            redraw!
-            echohl WarningMsg | echo " running..."
+        let Sou = expand("%:p")
+        if expand("%:e") == "c" || expand("%:e") == "cpp" || expand("%:e") == "cxx"
+            let Obj = expand("%:p:r").s:Obj_Extension
             if g:iswindows
-                exe ":!%<.exe"
+                let Exe = expand("%:p:r").s:Exe_Extension
             else
-                if g:isGUI
-                    exe ":!gnome-terminal -x bash -c './%<; echo; echo 请按 Enter 键继续; read'"
-                else
-                    exe ":!clear; ./%<"
-                endif
+                let Exe = expand("%:p:r")
             endif
-            redraw!
-            echohl WarningMsg | echo " running finish"
-        endif
-    elseif expand("%:e") == "java"
-        let class = expand("%:p:r").s:Class_Extension
-        if getftime(class) >= getftime(Sou)
-            redraw!
-            echohl WarningMsg | echo " running..."
-            if g:iswindows
-                exe ":!java %<"
-            else
-                if g:isGUI
-                    exe ":!gnome-terminal -x bash -c 'java %<; echo; echo 请按 Enter 键继续; read'"
+            if executable(Exe) && getftime(Exe) >= getftime(Obj) && getftime(Obj) >= getftime(Sou)
+                redraw!
+                echohl WarningMsg | echo " running..."
+                if g:iswindows
+                    exe ":!%<.exe"
                 else
-                    exe ":!clear; java %<"
+                    if g:isGUI
+                        exe ":!gnome-terminal -x bash -c './%<; echo; echo 请按 Enter 键继续; read'"
+                    else
+                        exe ":!clear; ./%<"
+                    endif
                 endif
+                redraw!
+                echohl WarningMsg | echo " running finish"
             endif
-            redraw!
-            echohl WarningMsg | echo " running finish"
+        elseif expand("%:e") == "java"
+            let class = expand("%:p:r").s:Class_Extension
+            if getftime(class) >= getftime(Sou)
+                redraw!
+                echohl WarningMsg | echo " running..."
+                if g:iswindows
+                    exe ":!java %<"
+                else
+                    if g:isGUI
+                        exe ":!gnome-terminal -x bash -c 'java %<; echo; echo 请按 Enter 键继续; read'"
+                    else
+                        exe ":!clear; java %<"
+                    endif
+                endif
+                redraw!
+                echohl WarningMsg | echo " running finish"
+            endif
         endif
     endif
 endfunc
- 
- 
+
+
+
 " -----------------------------------------------------------------------------
 "  < 在浏览器中预览 Html 或 PHP 文件 >
 " -----------------------------------------------------------------------------
 " 修改前请先通读此模块，明白了再改以避免错误
- 
+
 " F5 加浏览器名称缩写调用浏览器预览，启用前先确定有安装相应浏览器，并在下面的配置好其安装目录
 if g:iswindows
     "以下为只支持Windows系统的浏览器
- 
+
     " 调用系统IE浏览器预览，如果已卸载可将其注释
     nmap <F5>ie :call ViewInBrowser("ie")<cr>
     imap <F5>ie <ESC>:call ViewInBrowser("ie")<cr>
- 
+
     " 调用IETester(IE测试工具)预览，如果有安装可取消注释
     " nmap <F5>ie6 :call ViewInBrowser("ie6")<cr>
     " imap <F5>ie6 <ESC>:call ViewInBrowser("ie6")<cr>
@@ -540,25 +547,25 @@ elseif g:islinux
     "以下为只支持Linux系统的浏览器
     "暂未配置，待有时间再弄了
 endif
- 
+
 "以下为支持Windows与Linux系统的浏览器
- 
+
 " 调用Firefox浏览器预览，如果有安装可取消注释
 " nmap <F5>ff :call ViewInBrowser("ff")<cr>
 " imap <F5>ff <ESC>:call ViewInBrowser("ff")<cr>
- 
+
 " 调用Maxthon(遨游)浏览器预览，如果有安装可取消注释
 " nmap <F5>ay :call ViewInBrowser("ay")<cr>
 " imap <F5>ay <ESC>:call ViewInBrowser("ay")<cr>
- 
+
 " 调用Opera浏览器预览，如果有安装可取消注释
 " nmap <F5>op :call ViewInBrowser("op")<cr>
 " imap <F5>op <ESC>:call ViewInBrowser("op")<cr>
- 
+
 " 调用Chrome浏览器预览，如果有安装可取消注释
 " nmap <F5>cr :call ViewInBrowser("cr")<cr>
 " imap <F5>cr <ESC>:call ViewInBrowser("cr")<cr>
- 
+
 " 浏览器调用函数
 function! ViewInBrowser(name)
     if expand("%:e") == "php" || expand("%:e") == "html"
@@ -566,7 +573,7 @@ function! ViewInBrowser(name)
         if g:iswindows
             "获取要预览的文件路径，并将路径中的'\'替换为'/'，同时将路径文字的编码转换为gbk（同cp936）
             let file = iconv(substitute(expand("%:p"), '\', '/', "g"), "utf-8", "gbk")
- 
+
             "浏览器路径设置，路径中使用'/'斜杠，更改路径请更改双引号里的内容
             "下面只启用了系统IE浏览器，如需启用其它的可将其取消注释（得先安装，并配置好安装路径），也可按需增减
             let SystemIE = "C:/progra~1/intern~1/iexplore.exe"  "系统自带IE目录
@@ -575,14 +582,14 @@ function! ViewInBrowser(name)
             " let Firefox = "F:/Firefox/Firefox.exe"              "Firefox程序目录（可按实际更改）
             " let Opera = "F:/Opera/opera.exe"                    "Opera程序目录（可按实际更改）
             " let Maxthon = "C:/Progra~2/Maxthon/Bin/Maxthon.exe" "Maxthon程序目录（可按实际更改）
- 
+
             "本地虚拟服务器设置，我测试的是phpStudy2014，可根据自己的修改，更改路径请更改双引号里的内容
             let htdocs ="F:/phpStudy2014/WWW/"                  "虚拟服务器地址或目录（可按实际更改）
             let url = "localhost"                               "虚拟服务器网址（可按实际更改）
         elseif g:islinux
             "暂时还没有配置，有时间再弄了。
         endif
- 
+
         "浏览器调用缩写，可根据实际增减，注意，上面浏览器路径中没有定义过的变量（等号右边为变量）不能出现在下面哟（可将其注释或删除）
         let l:browsers = {}                             "定义缩写字典变量，此行不能删除或注释
         " let l:browsers["cr"] = Chrome                   "Chrome浏览器缩写
@@ -596,9 +603,9 @@ function! ViewInBrowser(name)
         " let l:browsers["ie9"] = IETester."-ie9"         "调用IETESTER工具以IE9预览缩写（变量加参数）
         " let l:browsers["ie10"] = IETester."-ie10"       "调用IETESTER工具以IE10预览缩写（变量加参数）
         " let l:browsers["iea"] = IETester."-al"          "调用IETESTER工具以支持的所有IE版本预览缩写（变量加参数）
- 
+
         if stridx(file, htdocs) == -1   "文件不在本地虚拟服务器目录，则直接预览（但不能解析PHP文件）
-           exec ":silent !start ". l:browsers[a:name] ." file://" . file
+            exec ":silent !start ". l:browsers[a:name] ." file://" . file
         else    "文件在本地虚拟服务器目录，则调用本地虚拟服务器解析预览（先启动本地虚拟服务器）
             let file = substitute(file, htdocs, "http://".url."/", "g")    "转换文件路径为虚拟服务器网址路径
             exec ":silent !start ". l:browsers[a:name] file
@@ -607,7 +614,7 @@ function! ViewInBrowser(name)
         echohl WarningMsg | echo " please choose the correct source file"
     endif
 endfunction
- 
+
 " -----------------------------------------------------------------------------
 "  < 其它配置 >
 " -----------------------------------------------------------------------------
@@ -615,8 +622,8 @@ set writebackup                             "保存文件前建立备份，保�
 set nobackup                                "设置无备份文件
 " set noswapfile                              "设置无临时文件
 " set vb t_vb=                                "关闭提示音
- 
- 
+
+
 " =============================================================================
 "                          << 以下为常用插件配置 >>
 " =============================================================================
@@ -626,7 +633,7 @@ set nobackup                                "设置无备份文件
 " -----------------------------------------------------------------------------
 " 用于括号与引号自动补全，不过会与函数原型提示插件echofunc冲突
 " 所以我就没有加入echofunc插件
- 
+
 " -----------------------------------------------------------------------------
 "  < Surround 插件配置 >
 " -----------------------------------------------------------------------------
@@ -765,13 +772,13 @@ endif
 "  < Tagbar 插件配置 >
 " -----------------------------------------------------------------------------
 " 相对 TagList 能更好的支持面向对象
- 
+
 " 常规模式下输入 tb 调用插件，如果有打开 TagList 窗口则先将其关闭
 nmap tb :TagbarToggle<CR>:TlistClose<CR>
- 
+
 let g:tagbar_width=30                       "设置窗口宽度
 " let g:tagbar_left=1                         "在左侧窗口中显示
- 
+
 " -----------------------------------------------------------------------------
 "  < Fugitive 插件配置 >
 " -----------------------------------------------------------------------------
@@ -836,7 +843,7 @@ endif
 " =============================================================================
 "                          << 以下为常用工具配置 >>
 " =============================================================================
- 
+
 " -----------------------------------------------------------------------------
 "  < cscope 工具配置 >
 " -----------------------------------------------------------------------------
@@ -851,7 +858,7 @@ if has("cscope")
     "在当前目录中添加任何数据库
     if filereadable("cscope.out")
         cs add cscope.out
-    "否则添加数据库环境中所指出的
+        "否则添加数据库环境中所指出的
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
     endif
@@ -866,7 +873,7 @@ if has("cscope")
     nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
     nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 endif
- 
+
 " -----------------------------------------------------------------------------
 "  < ctags 工具配置 >
 " -----------------------------------------------------------------------------
@@ -886,7 +893,7 @@ endif
 if (g:iswindows && g:isGUI)
     nmap <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
 endif
- 
+
 " -----------------------------------------------------------------------------
 "  < vimtweak 工具配置 > 请确保以已装了工具
 " -----------------------------------------------------------------------------
@@ -918,21 +925,18 @@ if (g:iswindows && g:isGUI)
             let g:Top_Most = 0
         endif
     endfunc
- 
+
     "快捷键设置
     nmap <c-up> :call Alpha_add()<CR>
     nmap <c-down> :call Alpha_sub()<CR>
     nmap <leader>t :call Top_window()<CR>
 endif
- 
+
 " =============================================================================
 "                          << 以下为常用自动命令配置 >>
 " =============================================================================
- 
+
 " 自动切换目录为当前编辑文件所在目录
 au BufRead,BufNewFile,BufEnter * cd %:p:h
- 
-" endif
- 
- 
 
+" endif
