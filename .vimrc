@@ -120,6 +120,7 @@ endif
 " 用于更方便的管理vim插件，具体用法参考 :h vundle 帮助
 " Vundle工具安装方法为在终端输入如下命令
 " git clone https://github.com/gmarik/vundle.vim.git ~/.vim/bundle/vundle.vim
+" git clone https://github.com/gmarik/vundle.vim.git ~/vimfiles/bundle/vundle.vim
 " 如果想在 windows 安装就必需先安装 "git for window"，可查阅网上资料
 
 set nocompatible                                      "禁用 Vi 兼容模式
@@ -129,8 +130,10 @@ if g:islinux
     set rtp+=~/.vim/bundle/vundle.vim
     call vundle#begin()
 else
-    set rtp+=$VIM/vimfiles/bundle/vundle.vim
-    call vundle#begin('$VIM/vimfiles/bundle/')
+    "set rtp+=$VIM/vimfiles/bundle/vundle.vim
+    "call vundle#begin('$VIM/vimfiles/bundle/')
+    set rtp+=$USERPROFILE/vimfiles/bundle/vundle.vim
+    call vundle#begin('$USERPROFILE/vimfiles/bundle/')
 endif
 
 " 使用Vundle来管理插件，这个必须要有。
@@ -674,7 +677,7 @@ set nobackup                                "设置无备份文件
 "    Hide clutter ('.pyc', '.git', '.hg', '.svn', '.bzr')
 "    Treat NERDTree more like a panel than a split.
 
-if isdirectory(expand("~/.vim/bundle/nerdtree"))
+if ( isdirectory(expand("~/.vim/bundle/nerdtree")) || isdirectory(expand("$USERPROFILE/vimfiles/bundle/nerdtree")))
     map <C-e> <plug>NERDTreeTabsToggle<CR>
     map <leader>e :NERDTreeFind<CR>
     nmap <leader>nt :NERDTreeFind<CR>
@@ -703,7 +706,7 @@ endif
 "    <Leader>a, :Tabularize /,<CR>
 "    <Leader>a<Bar> :Tabularize /<Bar><CR>
 
-if isdirectory(expand("~/.vim/bundle/tabular"))
+if ( isdirectory(expand("~/.vim/bundle/tabular")) || isdirectory(expand("$USERPROFILE/vimfiles/bundle/tabular")))
     nmap <Leader>a& :Tabularize /&<CR>
     vmap <Leader>a& :Tabularize /&<CR>
     nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
@@ -728,7 +731,7 @@ endif
 "
 "QuickStart Launch using <c-p>.
 
-if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
+if (isdirectory(expand("~/.vim/bundle/ctrlp.vim/")) || isdirectory(expand("$USERPROFILE/vimfiles/bundle/ctrlp.vim/")))
     let g:ctrlp_working_path_mode = 'ra'
     nnoremap <silent> <D-t> :CtrlP<CR>
     nnoremap <silent> <D-r> :CtrlPMRU<CR>
@@ -759,7 +762,7 @@ if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
                 \ 'fallback': s:ctrlp_fallback
                 \ }
 
-    if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
+    if (isdirectory(expand("~/.vim/bundle/ctrlp-funky/")) || isdirectory(expand("$USERPROFILE/vimfiles/bundle/ctrlp-funky/")))
         " CtrlP extensions
         let g:ctrlp_extensions = ['funky']
 
@@ -801,7 +804,7 @@ let g:tagbar_width=30                       "设置窗口宽度
 "    <leader>gp :Git push
 "    <leader>gw :Gwrite
 "    :Git ___ will pass anything along to git.
-if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
+if (isdirectory(expand("~/.vim/bundle/vim-fugitive/")) || isdirectory(expand("$USERPROFILE/vimfiles/bundle/vim-fugitive/")))
     nnoremap <silent> <leader>gs :Gstatus<CR>
     nnoremap <silent> <leader>gd :Gdiff<CR>
     nnoremap <silent> <leader>gc :Gcommit<CR>
@@ -828,7 +831,7 @@ endif
 
 " See `:echo g:airline_theme_map` for some more choices
 " Default in terminal vim is 'dark'
-if isdirectory(expand("~/.vim/bundle/vim-airline/"))
+if (isdirectory(expand("~/.vim/bundle/vim-airline/")) || isdirectory(expand("$USERPROFILE/vimfiles/bundle/vim-airline/")))
     if !exists('g:airline_theme')
         let g:airline_theme = 'molokai'
     endif
