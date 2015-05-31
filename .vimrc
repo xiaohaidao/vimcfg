@@ -129,8 +129,8 @@ if g:islinux
     set rtp+=~/.vim/bundle/vundle.vim
     call vundle#begin()
 else
-    set rtp+=$VIM/vimfiles/bundle/vundle.vim
-    call vundle#begin('$VIM/vimfiles/bundle/')
+    set rtp+=$HOME/vimfiles/bundle/vundle.vim
+    call vundle#begin('$HOME/vimfiles/bundle/')
 endif
 
 " 使用Vundle来管理插件，这个必须要有。
@@ -144,14 +144,13 @@ Plugin 'tomasr/molokai'           " 配色方案
 Plugin 'scrooloose/nerdtree'      " 文件浏览 <leader>e
 Plugin 'tpope/vim-surround'       " 替换cs]}
 Plugin 'ctrlpvim/ctrlp.vim'       " c-p查找文件
+Plugin 'tacahiroy/ctrlp-funky'    " ctrlp拓展 ,fu
 Plugin 'godlygeek/tabular'        " 通过符号对齐 ,a
 Plugin 'scrooloose/nerdcommenter' " 注释 <leader>c<space>
 Plugin 'tpope/vim-fugitive'       " git 插件
 Plugin 'bling/vim-airline'        " 状态栏 插件
 Plugin 'scrooloose/syntastic'     " 语法检查 插件
-if executable('ctags')
-    Plugin 'majutsushi/tagbar'    " 编程基本信息汇览 ,tt
-endif
+Plugin 'majutsushi/tagbar'        " 编程基本信息汇览 ,tb
 " }
 
 call vundle#end()
@@ -674,20 +673,18 @@ set nobackup                                "设置无备份文件
 "    Hide clutter ('.pyc', '.git', '.hg', '.svn', '.bzr')
 "    Treat NERDTree more like a panel than a split.
 
-if isdirectory(expand("~/.vim/bundle/nerdtree"))
-    map <C-e> <plug>NERDTreeTabsToggle<CR>
-    map <leader>e :NERDTreeFind<CR>
-    nmap <leader>nt :NERDTreeFind<CR>
+map <C-e> <plug>NERDTreeTabsToggle<CR>
+map <leader>e :NERDTreeFind<CR>
+nmap <leader>nt :NERDTreeFind<CR>
 
-    let NERDTreeShowBookmarks=1
-    let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
-    let NERDTreeChDirMode=0
-    let NERDTreeQuitOnOpen=1
-    let NERDTreeMouseMode=2
-    let NERDTreeShowHidden=1
-    let NERDTreeKeepTreeInNewTab=1
-    let g:nerdtree_tabs_open_on_gui_startup=0
-endif
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=1
+let NERDTreeMouseMode=2
+let NERDTreeShowHidden=1
+let NERDTreeKeepTreeInNewTab=1
+let g:nerdtree_tabs_open_on_gui_startup=0
 
 " -----------------------------------------------------------------------------
 "  < Tabularize 插件配置 >
@@ -703,24 +700,23 @@ endif
 "    <Leader>a, :Tabularize /,<CR>
 "    <Leader>a<Bar> :Tabularize /<Bar><CR>
 
-if isdirectory(expand("~/.vim/bundle/tabular"))
-    nmap <Leader>a& :Tabularize /&<CR>
-    vmap <Leader>a& :Tabularize /&<CR>
-    nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-    vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-    nmap <Leader>a=> :Tabularize /=><CR>
-    vmap <Leader>a=> :Tabularize /=><CR>
-    nmap <Leader>a: :Tabularize /:<CR>
-    vmap <Leader>a: :Tabularize /:<CR>
-    nmap <Leader>a:: :Tabularize /:\zs<CR>
-    vmap <Leader>a:: :Tabularize /:\zs<CR>
-    nmap <Leader>a, :Tabularize /,<CR>
-    vmap <Leader>a, :Tabularize /,<CR>
-    nmap <Leader>a,, :Tabularize /,\zs<CR>
-    vmap <Leader>a,, :Tabularize /,\zs<CR>
-    nmap <Leader>a<Space> :Tabularize /
-    vmap <Leader>a<Space> :Tabularize /
-endif
+nmap <Leader>a& :Tabularize /&<CR>
+vmap <Leader>a& :Tabularize /&<CR>
+nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+nmap <Leader>a=> :Tabularize /=><CR>
+vmap <Leader>a=> :Tabularize /=><CR>
+nmap <Leader>a: :Tabularize /:<CR>
+vmap <Leader>a: :Tabularize /:<CR>
+nmap <Leader>a:: :Tabularize /:\zs<CR>
+vmap <Leader>a:: :Tabularize /:\zs<CR>
+nmap <Leader>a, :Tabularize /,<CR>
+vmap <Leader>a, :Tabularize /,<CR>
+nmap <Leader>a,, :Tabularize /,\zs<CR>
+vmap <Leader>a,, :Tabularize /,\zs<CR>
+nmap <Leader>a<Space> :Tabularize /
+vmap <Leader>a<Space> :Tabularize /
+
 " -----------------------------------------------------------------------------
 "  < ctrlp 插件配置 >
 " -----------------------------------------------------------------------------
@@ -728,45 +724,42 @@ endif
 "
 "QuickStart Launch using <c-p>.
 
-if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
-    let g:ctrlp_working_path_mode = 'ra'
-    nnoremap <silent> <D-t> :CtrlP<CR>
-    nnoremap <silent> <D-r> :CtrlPMRU<CR>
-    let g:ctrlp_custom_ignore = {
-                \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-                \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+let g:ctrlp_working_path_mode = 'ra'
+nnoremap <silent> <D-t> :CtrlP<CR>
+nnoremap <silent> <D-r> :CtrlPMRU<CR>
+let g:ctrlp_custom_ignore = {
+            \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+            \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
 
-    " On Windows use "dir" as fallback command.
-    if g:iswindows
-        let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
-    elseif executable('ag')
-        let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
-    elseif executable('ack-grep')
-        let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
-    elseif executable('ack')
-        let s:ctrlp_fallback = 'ack %s --nocolor -f'
-    else
-        let s:ctrlp_fallback = 'find %s -type f'
-    endif
-    if exists("g:ctrlp_user_command")
-        unlet g:ctrlp_user_command
-    endif
-    let g:ctrlp_user_command = {
-                \ 'types': {
-                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ },
-                \ 'fallback': s:ctrlp_fallback
-                \ }
-
-    if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
-        " CtrlP extensions
-        let g:ctrlp_extensions = ['funky']
-
-        "funky
-        nnoremap <Leader>fu :CtrlPFunky<Cr>
-    endif
+" On Windows use "dir" as fallback command.
+if g:iswindows
+    let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
+elseif executable('ag')
+    let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+elseif executable('ack-grep')
+    let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
+elseif executable('ack')
+    let s:ctrlp_fallback = 'ack %s --nocolor -f'
+else
+    let s:ctrlp_fallback = 'find %s -type f'
 endif
+if exists("g:ctrlp_user_command")
+    unlet g:ctrlp_user_command
+endif
+let g:ctrlp_user_command = {
+            \ 'types': {
+            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+            \ },
+            \ 'fallback': s:ctrlp_fallback
+            \ }
+
+"ctrlp-funky 设置 without ctags
+" CtrlP extensions
+let g:ctrlp_extensions = ['funky']
+
+"funky
+nnoremap <Leader>fu :CtrlPFunky<Cr>
 
 " -----------------------------------------------------------------------------
 "  < Tagbar 插件配置 >
@@ -801,20 +794,19 @@ let g:tagbar_width=30                       "设置窗口宽度
 "    <leader>gp :Git push
 "    <leader>gw :Gwrite
 "    :Git ___ will pass anything along to git.
-if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
-    nnoremap <silent> <leader>gs :Gstatus<CR>
-    nnoremap <silent> <leader>gd :Gdiff<CR>
-    nnoremap <silent> <leader>gc :Gcommit<CR>
-    nnoremap <silent> <leader>gb :Gblame<CR>
-    nnoremap <silent> <leader>gl :Glog<CR>
-    nnoremap <silent> <leader>gp :Git push<CR>
-    nnoremap <silent> <leader>gr :Gread<CR>
-    nnoremap <silent> <leader>gw :Gwrite<CR>
-    nnoremap <silent> <leader>ge :Gedit<CR>
-    " Mnemonic _i_nteractive
-    nnoremap <silent> <leader>gi :Git add -p %<CR>
-    nnoremap <silent> <leader>gg :SignifyToggle<CR>
-endif
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <silent> <leader>gc :Gcommit<CR>
+nnoremap <silent> <leader>gb :Gblame<CR>
+nnoremap <silent> <leader>gl :Glog<CR>
+nnoremap <silent> <leader>gp :Git push<CR>
+nnoremap <silent> <leader>gr :Gread<CR>
+nnoremap <silent> <leader>gw :Gwrite<CR>
+nnoremap <silent> <leader>ge :Gedit<CR>
+" Mnemonic _i_nteractive
+nnoremap <silent> <leader>gi :Git add -p %<CR>
+nnoremap <silent> <leader>gg :SignifyToggle<CR>
+
 " -----------------------------------------------------------------------------
 "  < vim-airline 插件配置 >
 " -----------------------------------------------------------------------------
@@ -828,16 +820,14 @@ endif
 
 " See `:echo g:airline_theme_map` for some more choices
 " Default in terminal vim is 'dark'
-if isdirectory(expand("~/.vim/bundle/vim-airline/"))
-    if !exists('g:airline_theme')
-        let g:airline_theme = 'molokai'
-    endif
-    if !exists('g:airline_powerline_fonts')
-        " Use the default set of separators with a few customizations
+if !exists('g:airline_theme')
+    let g:airline_theme = 'molokai'
+endif
+if !exists('g:airline_powerline_fonts')
+    " Use the default set of separators with a few customizations
 
-        let g:airline_left_sep='›'  " Slightly fancier than '>'
-        let g:airline_right_sep='‹' " Slightly fancier than '<'
-    endif
+    let g:airline_left_sep='›'  " Slightly fancier than '>'
+    let g:airline_right_sep='‹' " Slightly fancier than '<'
 endif
 
 " =============================================================================
