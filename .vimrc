@@ -462,7 +462,7 @@ func! Run()
     if &filetype == "python"
         exe ":ccl"
         exe ":update"
-        exe ":!/usr/bin/env python %"
+        exe ":!python %"
     else
         let s:ShowWarning = 0
         call Link()
