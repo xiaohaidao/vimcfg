@@ -1,4 +1,5 @@
 #include <Stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct TNode Node;
@@ -6,14 +7,14 @@ typedef struct TNode Node;
 typedef struct TNode {
     char a;
     Node *p;
-};
+} Node;
 
 
 int check(char str[])
 {
     int i=0;
     Node *que,*t;
-    que->a='0';
+    que->a = 'o';
     que->p=NULL;
     while(str[i] != '\0')
     {
@@ -22,7 +23,7 @@ int check(char str[])
             t = (Node *) malloc(sizeof(Node));
             t->a = str[i];
             t->p = que;
-            que->a = str[i];
+            que = t;
             i++;
             continue;
         }
@@ -34,26 +35,51 @@ int check(char str[])
         }
         return 0;
     }
-    return 1;
+    if (que->a == 'o')
+        return 1;
+    return 0;
 }
 
-char *run(char ret[], char str[])
+Node run(Node ret, char str[])
 {
+    Node *tret;
+    Node *tret1 = (Node *)malloc (sizeof(Node));
+    tret1->p = NULL;
+    tret1->a = 'o';
+    tret = &ret;
+    while (tret->p!= NULL)
+        tret = tret->p;
     if (check(str) == 1)
-        ret[strlen(ret)] = 1;
-    else ret[strlen(ret)] = 0;
+    {
+        tret->a = 'y';
+    }
+    else 
+    {             
+        tret->a = 'n';
+    }
+    tret->p =  tret1;
     return ret;
 }
 
 int main()
 {
     int i,ti;
-    char str[128],ret[128];
+    char str[128];
+    Node ret;
+    ret.p = NULL;
+    ret.a = 'o';
     scanf("%i",&ti);
     for (i=0;i<ti;i++)
     {  
         scanf("%s",str);
         ret  = run(ret,str);
     }
-    printf("%s",ret);
+    while (ret.p != NULL)
+    {
+        if (ret.a == 'y')
+            printf("Yes!\n");
+        if (ret.a == 'n')
+            printf("No!\n");
+       ret = *(ret.p);
+    }
 }
