@@ -27,7 +27,11 @@ int check(char str[])
             i++;
             continue;
         }
-        if ( ((str[i] == ')') && (que->a == '(') ) || ((str[i] == ']') && (que->a == '[') ) ||((str[i] == '}') && (que->a == '{') ))
+        if ( 
+                ((str[i] == ')') && (que->a == '(') )
+                ||((str[i] == ']') && (que->a == '[') ) 
+                ||((str[i] == '}') && (que->a == '{') )
+           )
         {
             que = que->p;
             i++;
