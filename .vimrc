@@ -728,8 +728,6 @@ vmap <Leader>a<Space> :Tabularize /
 ":cw                如果有错误列表，则打开quickfix窗口 ( :help :cw )
 ":col               到前一个旧的错误列表 ( :help :col )
 ":cnew              到后一个较新的错误列表 ( :help :cnew ) 
-nmap <leader>cn :cn<cr>
-nmap <leader>cp :cp<cr>
 nmap <leader>cw :cw 10<cr> 
 
 "
