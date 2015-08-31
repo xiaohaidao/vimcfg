@@ -233,84 +233,89 @@ au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
 map <Leader> :
 map <Leader>w :w <CR>
 map <Leader>q :q <CR>
+map <Leader>td :call Do_CsDel() <CR>
 map <Leader>tt :call Do_CsTag() <CR>
 "更新tags和cscope
-func! Do_CsTag()
-        let dir = getcwd()
-        if filereadable("tags")
-            if(g:iswindows==1)
-                let tagsdeleted=delete(dir."\\"."tags")
-            else
-                let tagsdeleted=delete("./"."tags")
-            endif
-            if(tagsdeleted!=0)
-                echohl WarningMsg | echo "Fail to do tags! I cannot delete the tags" | echohl None
-                return
-            endif
+func! Do_CsDel()
+    let dir = getcwd()
+    if filereadable("tags")
+        if(g:iswindows==1)
+            let tagsdeleted=delete(dir."\\"."tags")
+        else
+            let tagsdeleted=delete("./"."tags")
         endif
-         
-        if has("cscope")
-            silent! execute "cs kill -1"
+        if(tagsdeleted!=0)
+            echohl WarningMsg | echo "Fail to do tags! I cannot delete the tags" | echohl None
+            return
         endif
-         
-        if filereadable("cscope.files")
-            if(g:iswindows==1)
-                let csfilesdeleted=delete(dir."\\"."cscope.files")
-            else
-                let csfilesdeleted=delete("./"."cscope.files")
-            endif
-            if(csfilesdeleted!=0)
-                echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.files" | echohl None
-                return
-            endif
-        endif
-                                             
-        if filereadable("cscope.out")
-            if(g:iswindows==1)
-                let csoutdeleted=delete(dir."\\"."cscope.out")
-            else
-                let csoutdeleted=delete("./"."cscope.out")
-            endif
-            if(csoutdeleted!=0)
-                echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.out" | echohl None
-                return
-            endif
-        endif
-                                             
-        if (filereadable("cscope.in.out") ||filereadable("cscope.po.out")) 
-            if(g:iswindows==1)
-                let csoutdeleted=delete(dir."\\"."cscope.in.out")
-                let csoutdeleted=delete(dir."\\"."cscope.po.out")
-            else
-                let csoutdeleted=delete("./"."cscope.in.out")
-                let csoutdeleted=delete("./"."cscope.po.out")
-            endif
-            if(csoutdeleted!=0)
-                echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.in.out and cscope.po.out" | echohl None
-                return
-            endif
-        endif
+    endif
 
-        if(executable('ctags'))
-            "silent! execute "!ctags -R --c-types=+p --fields=+S *"
-            "silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
-            silent! execute "!ctags -R"
+    if has("cscope")
+        silent! execute "cs kill -1"
+    endif
+
+    if filereadable("cscope.files")
+        if(g:iswindows==1)
+            let csfilesdeleted=delete(dir."\\"."cscope.files")
+        else
+            let csfilesdeleted=delete("./"."cscope.files")
         endif
-             
-        if(executable('cscope') && has("cscope") )
-            if(g:iswindows!=1)
-                silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
-            else
-                silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
-            endif
-            silent! execute "!cscope -Rbq"
-            execute "normal :"
-                                                                     
-            if filereadable("cscope.out")
-                execute "cs add cscope.out"
-            endif
+        if(csfilesdeleted!=0)
+            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.files" | echohl None
+            return
         endif
+    endif
+
+    if filereadable("cscope.out")
+        if(g:iswindows==1)
+            let csoutdeleted=delete(dir."\\"."cscope.out")
+        else
+            let csoutdeleted=delete("./"."cscope.out")
+        endif
+        if(csoutdeleted!=0)
+            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.out" | echohl None
+            return
+        endif
+    endif
+
+    if (filereadable("cscope.in.out") ||filereadable("cscope.po.out")) 
+        if(g:iswindows==1)
+            let csoutdeleted=delete(dir."\\"."cscope.in.out")
+            let csoutdeleted=delete(dir."\\"."cscope.po.out")
+        else
+            let csoutdeleted=delete("./"."cscope.in.out")
+            let csoutdeleted=delete("./"."cscope.po.out")
+        endif
+        if(csoutdeleted!=0)
+            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.in.out and cscope.po.out" | echohl None
+            return
+        endif
+    endif
 endfunc
+
+function Do_CsTag()
+    call Do_CsDel()
+    if(executable('ctags'))
+        "silent! execute "!ctags -R --c-types=+p --fields=+S *"
+        "silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
+        silent! execute "!ctags -R"
+    endif
+
+    if(executable('cscope') && has("cscope") )
+        if(g:iswindows!=1)
+            silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
+        else
+            silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
+        endif
+        silent! execute "!cscope -Rbq"
+        redraw!
+        execute "normal :"
+
+        if filereadable("cscope.out")
+            execute "cs add cscope.out"
+        endif
+    endif
+endfunction
 
 " -----------------------------------------------------------------------------
 "  < 界面配置 >
