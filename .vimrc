@@ -139,18 +139,20 @@ Plugin 'gmarik/vundle.vim'
 " 以下为要安装或更新的插件，不同仓库都有（具体书写规范请参考帮助）
 " General Programming
 " {
-Plugin 'jiangmiao/auto-pairs'     " 自动括号
-Plugin 'tomasr/molokai'           " 配色方案
-Plugin 'scrooloose/nerdtree'      " 文件浏览 <leader>e
-Plugin 'tpope/vim-surround'       " 替换cs]}
-Plugin 'ctrlpvim/ctrlp.vim'       " c-p查找文件
-Plugin 'tacahiroy/ctrlp-funky'    " ctrlp拓展 ,fu
-Plugin 'godlygeek/tabular'        " 通过符号对齐 ,a
-Plugin 'scrooloose/nerdcommenter' " 注释 <leader>c<space>
-Plugin 'tpope/vim-fugitive'       " git 插件
-Plugin 'bling/vim-airline'        " 状态栏 插件
-Plugin 'scrooloose/syntastic'     " 语法检查 插件
-Plugin 'majutsushi/tagbar'        " 编程基本信息汇览 ,tb
+Plugin 'jiangmiao/auto-pairs'             " 自动括号
+Plugin 'tomasr/molokai'                   " 配色方案
+"Plugin 'altercation/vim-colors-solarized' " 配色方案
+Plugin 'scrooloose/nerdtree'              " 文件浏览 <leader>e
+Plugin 'tpope/vim-surround'               " 替换cs]}
+Plugin 'ctrlpvim/ctrlp.vim'               " c-p查找文件
+Plugin 'tacahiroy/ctrlp-funky'            " ctrlp拓展 ,fu
+Plugin 'godlygeek/tabular'                " 通过符号对齐 ,a
+Plugin 'scrooloose/nerdcommenter'         " 注释 <leader>c<space>
+Plugin 'tpope/vim-fugitive'               " git 插件
+Plugin 'vim-airline/vim-airline'          " 状态栏 插件
+Plugin 'vim-airline/vim-airline-themes'   " 状态栏 插件
+Plugin 'scrooloose/syntastic'             " 语法检查 插件
+Plugin 'majutsushi/tagbar'                " 编程基本信息汇览 ,tb
 " }
 
 call vundle#end()
@@ -337,12 +339,17 @@ endif
 
 " 设置代码配色方案
 colorscheme molokai                 "molokai配色插件开启
-
 if g:isGUI
     let g:rehash256 = 1              "Gvim配色方案
 else 
     let g:molokai_orginal = 1               "终端配色方案
 endif
+"if g:isGUI
+    "set background=light
+"else
+    "set background=dark
+"endif
+"colorscheme solarized
 
 " 显示/隐藏菜单栏、工具栏、滚动条，可用 Ctrl + F11 切换
 if g:isGUI
@@ -922,6 +929,7 @@ nnoremap <silent> <leader>gg :SignifyToggle<CR>
 
 " See `:echo g:airline_theme_map` for some more choices
 " Default in terminal vim is 'dark'
+"
 if !exists('g:airline_theme')
     let g:airline_theme = 'molokai'
 endif
