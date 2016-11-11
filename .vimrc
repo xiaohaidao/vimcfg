@@ -812,10 +812,10 @@ vmap <Leader>a,, :Tabularize /,\zs<CR>
 nmap <Leader>a<Space> :Tabularize /
 vmap <Leader>a<Space> :Tabularize /
 
-"
+
 " -----------------------------------------------------------------------------
 "  < quickfix 插件配置 >
-" -----------------------------------------------------------------------------
+" ---------------------------------------------------------------------------"--
 ":cc                显示详细错误信息 ( :help :cc )
 ":cp                跳到上一个错误 ( :help :cp )
 ":cn                跳到下一个错误 ( :help :cn )
@@ -824,6 +824,26 @@ vmap <Leader>a<Space> :Tabularize /
 ":col               到前一个旧的错误列表 ( :help :col )
 ":cnew              到后一个较新的错误列表 ( :help :cnew ) 
 nmap <leader>cw :cw 10<cr> 
+
+" -----------------------------------------------------------------------------
+"  < syntastic 插件配置 >
+" ---------------------------------------------------------------------------"--
+let g:syntastic_error_symbol='>>'
+let g:syntastic_warning_symbol='>'
+let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wq=0
+let g:syntastic_enable_highlighting=1
+let g:syntastic_python_checkers=['pyflakes'] " 使用pyflakes,速度比pylint快
+"let g:syntastic_javascript_checkers = ['jsl', 'jshint']
+"let g:syntastic_html_checkers=['tidy', 'jshint']
+
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_loc_list_height = 5
+
+" nnoremap <Leader>ee :Errors<cr>
+" nnoremap <Leader>sn :lnext<cr>
+" nnoremap <Leader>sp :lprevious<cr>
 
 "
 " -----------------------------------------------------------------------------
