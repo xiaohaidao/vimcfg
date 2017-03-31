@@ -141,7 +141,7 @@ Plugin 'gmarik/vundle.vim'
 " {
 Plugin 'jiangmiao/auto-pairs'             " 自动括号
 Plugin 'tomasr/molokai'                   " 配色方案
-"Plugin 'altercation/vim-colors-solarized' " 配色方案
+Plugin 'altercation/vim-colors-solarized' " 配色方案
 Plugin 'scrooloose/nerdtree'              " 文件浏览 <leader>e
 Plugin 'tpope/vim-surround'               " 替换cs]}
 Plugin 'ctrlpvim/ctrlp.vim'               " c-p查找文件
@@ -153,6 +153,11 @@ Plugin 'vim-airline/vim-airline'          " 状态栏 插件
 Plugin 'vim-airline/vim-airline-themes'   " 状态栏 插件
 Plugin 'scrooloose/syntastic'             " 语法检查 插件
 Plugin 'majutsushi/tagbar'                " 编程基本信息汇览 ,tb
+Plugin 'nathanaelkane/vim-indent-guides'  " 缩进显示
+Plugin 'dyng/ctrlsf.vim'                  " 搜索
+Plugin 'sjl/gundo.vim'                    " undo tree ,ud
+Plugin 'ggreer/the_silver_searcher'       " ag
+"Plugin 'Valloric/YouCompleteMe'           " YouCompleteMe
 " }
 
 call vundle#end()
@@ -228,12 +233,13 @@ imap <c-h> <Left>
 " Ctrl + L 插入模式下光标向右移动
 imap <c-l> <Right>
 
-" 启用每行超过80列的字符提示（字体变蓝并加下划线），不启用就注释掉
-au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
+" 启用每行超过120列的字符提示（字体变蓝并加下划线），不启用就注释掉
+au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 120 . 'v.\+', -1)
 "
 "个人快捷键喜好配置
 map <Leader> :
 map <Leader>w :w <CR>
+autocmd BufWritePre * :%s/\s\+$//e
 map <Leader>q :q <CR>
 map <Leader>td :call Do_CsDel() <CR>
 map <Leader>tt :call Do_CsTag() <CR>
@@ -280,7 +286,7 @@ func! Do_CsDel()
         endif
     endif
 
-    if (filereadable("cscope.in.out") ||filereadable("cscope.po.out")) 
+    if (filereadable("cscope.in.out") ||filereadable("cscope.po.out"))
         if(g:iswindows==1)
             let csoutdeleted=delete(dir."\\"."cscope.in.out")
             let csoutdeleted=delete(dir."\\"."cscope.po.out")
@@ -338,18 +344,19 @@ if g:isGUI
 endif
 
 " 设置代码配色方案
-colorscheme molokai                 "molokai配色插件开启
-if g:isGUI
-    let g:rehash256 = 1              "Gvim配色方案
-else 
-    let g:molokai_orginal = 1               "终端配色方案
-endif
+"colorscheme molokai                 "molokai配色插件开启
 "if g:isGUI
-    "set background=light
+    "let g:rehash256 = 1              "Gvim配色方案
 "else
-    "set background=dark
+    "let g:molokai_orginal = 1               "终端配色方案
 "endif
-"colorscheme solarized
+set background=dark
+if g:isGUI
+    set term=xterm
+    set t_Co=256
+endif
+let g:solarized_termcolors = 256
+colorscheme solarized
 
 " 显示/隐藏菜单栏、工具栏、滚动条，可用 Ctrl + F11 切换
 if g:isGUI
@@ -371,7 +378,7 @@ if g:isGUI
 endif
 
 " -----------------------------------------------------------------------------
-"  < 编译、连接、运行配置 (目前只配置了C、C++、Java语言、python)> 
+"  < 编译、连接、运行配置 (目前只配置了C、C++、Java语言、python)>
 " -----------------------------------------------------------------------------
 " F9 一键保存、编译、连接存并运行
 nmap <F9> :call Run()<CR>
@@ -822,8 +829,8 @@ vmap <Leader>a<Space> :Tabularize /
 ":cl                列出所有错误 ( :help :cl )
 ":cw                如果有错误列表，则打开quickfix窗口 ( :help :cw )
 ":col               到前一个旧的错误列表 ( :help :col )
-":cnew              到后一个较新的错误列表 ( :help :cnew ) 
-nmap <leader>cw :cw 10<cr> 
+":cnew              到后一个较新的错误列表 ( :help :cnew )
+nmap <leader>cw :cw 10<cr>
 
 " -----------------------------------------------------------------------------
 "  < syntastic 插件配置 >
@@ -960,10 +967,61 @@ if !exists('g:airline_powerline_fonts')
     let g:airline_right_sep='‹' " Slightly fancier than '<'
 endif
 
+" -----------------------------------------------------------------------------
+"  < vim-indent-guides 插件配置 >
+" -----------------------------------------------------------------------------
+" 自动启动  <leader>ig
+let g:indent_guides_enable_on_vim_startup = 1
+" 自定义颜色
+let g:indent_guides_auto_colors = 1
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+" 终端
+"hi IndentGuidesOdd  ctermbg=black
+"hi IndentGuidesEven ctermbg=darkgrey
+"
+" -----------------------------------------------------------------------------
+"  <  插件配置 >
+" -----------------------------------------------------------------------------
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+vmap     <C-F>F <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
+nnoremap <C-F>t :CtrlSFToggle<CR>
+inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+"
+" -----------------------------------------------------------------------------
+"  < gundo 插件配置 >
+" -----------------------------------------------------------------------------
+"  You can use p on a state to make the preview window show the diff between
+"  your current state and the selected state, instead of a preview of what the selected state changed.
+nnoremap <leader>ud :GundoToggle<CR>
+"
+" -----------------------------------------------------------------------------
+"  < ctrlsf 插件配置 >
+" -----------------------------------------------------------------------------
+let g:ctrlsf_ackprg = 'ag'
+"
+"
 " =============================================================================
 "                          << 以下为常用工具配置 >>
 " =============================================================================
 
+
+" -----------------------------------------------------------------------------
+"  < YouCompleteMe 共具配置 >
+" -----------------------------------------------------------------------------
+"YouCompleteMe 通过这个cm_global_ycm_extra_conf来获得补全规则，可以如下指定，也可以每次放置在工作目录
+let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+"for ycm
+let g:ycm_error_symbol = '>>'
+let g:ycm_warning_symbol = '>*'
+nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nmap <F4> :YcmDiags<CR>
 " -----------------------------------------------------------------------------
 "  < cscope 工具配置 >
 " -----------------------------------------------------------------------------
