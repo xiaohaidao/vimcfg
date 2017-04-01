@@ -344,19 +344,16 @@ if g:isGUI
 endif
 
 " 设置代码配色方案
-"colorscheme molokai                 "molokai配色插件开启
-"if g:isGUI
-    "let g:rehash256 = 1              "Gvim配色方案
-"else
-    "let g:molokai_orginal = 1               "终端配色方案
-"endif
-set background=dark
 if g:isGUI
+    set background=dark
     set term=xterm
     set t_Co=256
+    let g:solarized_termcolors = 256
+    colorscheme solarized
+else
+    colorscheme molokai                 "molokai配色插件开启
+    let g:molokai_orginal = 1               "终端配色方案
 endif
-let g:solarized_termcolors = 256
-colorscheme solarized
 
 " 显示/隐藏菜单栏、工具栏、滚动条，可用 Ctrl + F11 切换
 if g:isGUI
@@ -1053,7 +1050,8 @@ if has("cscope")
     set csto=0
     "在当前目录中添加任何数据库
     if filereadable("cscope.out")
-        cs add cscope.out
+        "出现重复加载就注销掉
+        "cs add cscope.out
         "否则添加数据库环境中所指出的
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
@@ -1068,6 +1066,7 @@ if has("cscope")
     nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
     nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
     nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\><space> :cs find
 endif
 
 " -----------------------------------------------------------------------------
