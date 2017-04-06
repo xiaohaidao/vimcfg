@@ -1051,7 +1051,7 @@ if has("cscope")
     "在当前目录中添加任何数据库
     if filereadable("cscope.out")
         "出现重复加载就注销掉
-        "cs add cscope.out
+        cs add cscope.out
         "否则添加数据库环境中所指出的
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
