@@ -302,7 +302,7 @@ func! Do_CsDel()
 endfunc
 
 function Do_CsTag()
-    call Do_CsDel()
+    "call Do_CsDel()
     if(executable('ctags'))
         "silent! execute "!ctags -R --c-types=+p --fields=+S *"
         "silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
@@ -310,10 +310,12 @@ function Do_CsTag()
     endif
 
     if(executable('cscope') && has("cscope") )
-        if(g:iswindows!=1)
-            silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
-        else
-            silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
+        if !filereadable("cscope.files")
+            if(g:iswindows!=1)
+                silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
+            else
+                silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
+            endif
         endif
         silent! execute "!cscope -Rbq"
         redraw!
