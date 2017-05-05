@@ -312,7 +312,7 @@ function Do_CsTag()
     if(executable('cscope') && has("cscope") )
         if !filereadable("cscope.files")
             if(g:iswindows!=1)
-                silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
+                silent! execute "!find . -name '*.h' -o -name '*.s' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
             else
                 silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
             endif
@@ -1135,6 +1135,6 @@ endif
 " =============================================================================
 
 " 自动切换目录为当前编辑文件所在目录
-au BufRead,BufNewFile,BufEnter * cd %:p:h
+"au BufRead,BufNewFile,BufEnter * cd %:p:h
 
 " endif
