@@ -134,7 +134,7 @@ else
 endif
 
 " 使用Vundle来管理插件，这个必须要有。
-Plugin 'gmarik/vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 " 以下为要安装或更新的插件，不同仓库都有（具体书写规范请参考帮助）
 " General Programming
@@ -157,6 +157,7 @@ Plugin 'nathanaelkane/vim-indent-guides'  " 缩进显示
 Plugin 'dyng/ctrlsf.vim'                  " 搜索
 Plugin 'sjl/gundo.vim'                    " undo tree ,ud
 Plugin 'ggreer/the_silver_searcher'       " ag
+Plugin 'iamcco/markdown-preview.vim'      " markdown preview
 "Plugin 'Valloric/YouCompleteMe'           " YouCompleteMe
 " }
 
@@ -1003,7 +1004,20 @@ nnoremap <leader>ud :GundoToggle<CR>
 " -----------------------------------------------------------------------------
 let g:ctrlsf_ackprg = 'ag'
 "
-"
+" -----------------------------------------------------------------------------
+"  < MarkDown Preview 插件配置 >
+" -----------------------------------------------------------------------------
+nmap <silent> <F8> <Plug>MarkdownPreview        " for normal mode
+imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
+nmap <silent> <F9> <Plug>StopMarkdownPreview    " for normal mode
+imap <silent> <F9> <Plug>StopMarkdownPreview    " for insert mode
+
+if g:islinux
+    let g:mkdp_path_to_chrome = '/cygdrive/d/Program\ Files/Mozilla\ Firefox/firefox.exe'
+else
+    let g:mkdp_path_to_chrome = 'D:\Program Files\Mozilla Firefox\firefox.exe'
+endif
+
 " =============================================================================
 "                          << 以下为常用工具配置 >>
 " =============================================================================
