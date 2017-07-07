@@ -158,6 +158,7 @@ Plugin 'dyng/ctrlsf.vim'                  " 搜索
 Plugin 'sjl/gundo.vim'                    " undo tree ,ud
 Plugin 'ggreer/the_silver_searcher'       " ag
 Plugin 'iamcco/markdown-preview.vim'      " markdown preview
+Plugin 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
 "Plugin 'Valloric/YouCompleteMe'           " YouCompleteMe
 " }
 
@@ -238,10 +239,7 @@ imap <c-l> <Right>
 au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 120 . 'v.\+', -1)
 "
 "个人快捷键喜好配置
-map <Leader> :
-map <Leader>w :w <CR>
 autocmd BufWritePre * :%s/\s\+$//e
-map <Leader>q :q <CR>
 map <Leader>td :call Do_CsDel() <CR>
 map <Leader>tt :call Do_CsTag() <CR>
 "更新tags和cscope
@@ -1017,6 +1015,16 @@ if g:islinux
 else
     let g:mkdp_path_to_chrome = 'D:\Program Files\Mozilla Firefox\firefox.exe'
 endif
+" -----------------------------------------------------------------------------
+"  < Doxygen Toolkit 插件配置 >
+" -----------------------------------------------------------------------------
+let g:DoxygenToolkit_authorName="Bob Li, oxox0@qq.com"
+let g:DoxygenToolkit_briefTag_funcName="yes"
+let g:doxygen_enhanced_color=1
+map <leader>doa :DoxAuthor<CR>
+map <leader>dox :Dox<CR>
+map <leader>dol :DoxLic<CR>
+map <leader>dob :DoxBlock<CR>
 
 " =============================================================================
 "                          << 以下为常用工具配置 >>
