@@ -1090,7 +1090,7 @@ if has("cscope")
     nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
     nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
     nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\><space> :cs find
+    nmap <C-\><space> :cs find 
 endif
 
 " -----------------------------------------------------------------------------
