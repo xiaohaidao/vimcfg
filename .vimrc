@@ -163,7 +163,6 @@ Plugin 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
 " }
 
 call vundle#end()
-filetype plugin indent on
 "
 "" Brief help
 " :PluginList       - lists configured plugins
