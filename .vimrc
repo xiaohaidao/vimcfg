@@ -239,7 +239,6 @@ imap <c-l> <Right>
 au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 120 . 'v.\+', -1)
 "
 "个人快捷键喜好配置
-autocmd BufWritePre * :%s/\s\+$//e
 map <Leader>td :call Do_CsDel() <CR>
 map <Leader>tt :call Do_CsTag() <CR>
 "更新tags和cscope
