@@ -212,8 +212,8 @@ nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 " 当文件在外部被修改，自动更新该文件
 set autoread
 
-" 常规模式下输入 cS 清除行尾空格
-nmap cS :%s/\s\+$//g<CR>:noh<CR>
+" 常规模式下输入 cL 清除行尾空格
+nmap cL :%s/\s\+$//g<CR>:noh<CR>
 
 " 常规模式下输入 cM 清除行尾 ^M 符号
 nmap cM :%s/\r$//g<CR>:noh<CR>
