@@ -159,6 +159,8 @@ Plugin 'sjl/gundo.vim'                    " undo tree ,ud
 Plugin 'ggreer/the_silver_searcher'       " ag
 Plugin 'iamcco/markdown-preview.vim'      " markdown preview
 Plugin 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
+Plugin 'ervandew/supertab'                "
+Plugin 'SirVer/ultisnips'                 "
 "Plugin 'Valloric/YouCompleteMe'           " YouCompleteMe
 " }
 
@@ -1024,6 +1026,12 @@ map <leader>doa :DoxAuthor<CR>
 map <leader>dox :Dox<CR>
 map <leader>dol :DoxLic<CR>
 map <leader>dob :DoxBlock<CR>
+" -----------------------------------------------------------------------------
+"  < ultisnips  插件配置 >
+" -----------------------------------------------------------------------------
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " =============================================================================
 "                          << 以下为常用工具配置 >>
@@ -1032,7 +1040,11 @@ map <leader>dob :DoxBlock<CR>
 
 " -----------------------------------------------------------------------------
 "  < YouCompleteMe 共具配置 >
-" -----------------------------------------------------------------------------
+" ----------------o-------------------------------------------------------------
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
 "YouCompleteMe 通过这个cm_global_ycm_extra_conf来获得补全规则，可以如下指定，也可以每次放置在工作目录
 let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 "for ycm
