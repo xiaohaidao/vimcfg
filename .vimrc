@@ -127,9 +127,11 @@ filetype off                                          "禁用文件类型侦测
 
 if g:islinux
     set rtp+=~/.vim/bundle/vundle.vim
+    let bundlepath='~/.vim/bundle/'
     call vundle#begin()
 else
     set rtp+=$HOME/vimfiles/bundle/vundle.vim
+    let bundlepath=$HOME.'/vimfiles/bundle/'
     call vundle#begin('$HOME/vimfiles/bundle/')
 endif
 
@@ -159,8 +161,8 @@ Plugin 'sjl/gundo.vim'                    " undo tree ,ud
 Plugin 'ggreer/the_silver_searcher'       " ag
 Plugin 'iamcco/markdown-preview.vim'      " markdown preview
 Plugin 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
-Plugin 'ervandew/supertab'                "
-Plugin 'SirVer/ultisnips'                 "
+Plugin 'ervandew/supertab'                " Super tab
+Plugin 'SirVer/ultisnips'                 " snippet
 "Plugin 'Valloric/YouCompleteMe'           " YouCompleteMe
 " }
 
@@ -1046,8 +1048,16 @@ let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 "YouCompleteMe 通过这个cm_global_ycm_extra_conf来获得补全规则，可以如下指定，也可以每次放置在工作目录
-let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-"for ycm
+let g:ycm_global_ycm_extra_conf=bundlepath.'YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+set runtimepath+=bundlepath.'YouCompleteMe'
+if (g:iswindows)
+    let g:ycm_server_python_interpreter = "python.exe" " python27
+else
+    let g:ycm_server_python_interpreter = "/usr/bin/python" " python27
+endif
+
+set completeopt-=preview
+let g:ycm_confirm_extra_conf=0
 let g:ycm_error_symbol = '>>'
 let g:ycm_warning_symbol = '>*'
 nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
