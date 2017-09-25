@@ -150,15 +150,15 @@ Plugin 'ctrlpvim/ctrlp.vim'               " c-p查找文件
 Plugin 'tacahiroy/ctrlp-funky'            " ctrlp拓展 ,fu
 Plugin 'godlygeek/tabular'                " 通过符号对齐 ,a
 Plugin 'scrooloose/nerdcommenter'         " 注释 <leader>c<space>
-Plugin 'tpope/vim-fugitive'               " git 插件
+"Plugin 'tpope/vim-fugitive'               " git 插件
 Plugin 'vim-airline/vim-airline'          " 状态栏 插件
 Plugin 'vim-airline/vim-airline-themes'   " 状态栏 插件
 Plugin 'scrooloose/syntastic'             " 语法检查 插件
 Plugin 'majutsushi/tagbar'                " 编程基本信息汇览 ,tb
 Plugin 'nathanaelkane/vim-indent-guides'  " 缩进显示
-Plugin 'dyng/ctrlsf.vim'                  " 搜索
 Plugin 'sjl/gundo.vim'                    " undo tree ,ud
-Plugin 'ggreer/the_silver_searcher'       " ag
+"Plugin 'dyng/ctrlsf.vim'                  " 搜索
+"Plugin 'ggreer/the_silver_searcher'       " ag
 Plugin 'iamcco/markdown-preview.vim'      " markdown preview
 Plugin 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
 Plugin 'ervandew/supertab'                " Super tab
