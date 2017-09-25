@@ -162,7 +162,9 @@ Plugin 'ggreer/the_silver_searcher'       " ag
 Plugin 'iamcco/markdown-preview.vim'      " markdown preview
 Plugin 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
 Plugin 'ervandew/supertab'                " Super tab
-Plugin 'SirVer/ultisnips'                 " snippet
+Plugin 'SirVer/ultisnips'                 " Track the engine.
+Plugin 'honza/vim-snippets'               " Snippets are separated from the engine
+Plugin 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
 "Plugin 'Valloric/YouCompleteMe'           " YouCompleteMe
 " }
 
@@ -1051,9 +1053,9 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:ycm_global_ycm_extra_conf=bundlepath.'YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 set runtimepath+=bundlepath.'YouCompleteMe'
 if (g:iswindows)
-    let g:ycm_server_python_interpreter = "python.exe" " python27
+    let g:ycm_server_python_interpreter = "python.exe"
 else
-    let g:ycm_server_python_interpreter = "/usr/bin/python" " python27
+    let g:ycm_server_python_interpreter = "/usr/bin/python"
 endif
 
 set completeopt-=preview
