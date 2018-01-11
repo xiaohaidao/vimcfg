@@ -119,18 +119,18 @@ endif
 " -----------------------------------------------------------------------------
 " 用于更方便的管理vim插件，具体用法参考 :h vundle 帮助
 " Vundle工具安装方法为在终端输入如下命令
-" git clone https://github.com/gmarik/vundle.vim.git ~/.vim/bundle/vundle.vim
+" git clone https://github.com/vundlevim/vundle.vim.git ~/.vim/bundle/Vundle.vim
 " 如果想在 windows 安装就必需先安装 "git for window"，可查阅网上资料
 
 set nocompatible                                      "禁用 Vi 兼容模式
 filetype off                                          "禁用文件类型侦测
 
 if g:islinux
-    set rtp+=~/.vim/bundle/vundle.vim
+    set rtp+=~/.vim/bundle/Vundle.vim
     let bundlepath='~/.vim/bundle/'
     call vundle#begin()
 else
-    set rtp+=$HOME/vimfiles/bundle/vundle.vim
+    set rtp+=$HOME/vimfiles/bundle/Vundle.vim
     let bundlepath=$HOME.'/vimfiles/bundle/'
     call vundle#begin('$HOME/vimfiles/bundle/')
 endif
