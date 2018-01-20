@@ -165,6 +165,7 @@ Plugin 'ervandew/supertab'                " Super tab
 Plugin 'SirVer/ultisnips'                 " Track the engine.
 Plugin 'honza/vim-snippets'               " Snippets are separated from the engine
 Plugin 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
+"Plugin 'fatih/vim-go'                     " Golang plugin
 "Plugin 'Valloric/YouCompleteMe'           " YouCompleteMe
 " }
 
@@ -246,6 +247,8 @@ au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
 "个人快捷键喜好配置
 map <Leader>td :call Do_CsDel() <CR>
 map <Leader>tt :call Do_CsTag() <CR>
+map <Leader>adt :call SetTitle() <CR>
+
 "更新tags和cscope
 func! Do_CsDel()
     let dir = getcwd()
@@ -329,6 +332,43 @@ function Do_CsTag()
         endif
     endif
 endfunction
+
+func SetComment1()
+    call append(line("."),"/* ================================================================")
+    call append(line(".")+1, " *   Copyright (C) ".strftime("%Y")." BobLi Ltd. All rights reserved.")
+    call append(line(".")+2, " *")
+    call append(line(".")+3, " *   Filename     : ".expand("%:t"))
+    call append(line(".")+4, " *   Author       : BobLi")
+    call append(line(".")+5, " *   Email        : oxox0@qq.com")
+    call append(line(".")+6, " *   Create time  : ".strftime("%Y/%m/%d"))
+    call append(line(".")+7, " *   Description  :")
+    call append(line(".")+8, " *")
+    call append(line(".")+9, " * ================================================================*/")
+    call append(line(".")+10, "")
+endfunc
+
+func SetComment2()
+    call append(line("."), "#================================================================")
+    call append(line(".")+1, "#   Copyright (C) ".strftime("%Y")." BobLi Ltd. All rights reserved.")
+    call append(line(".")+2, "#")
+    call append(line(".")+3, "#   Filename     : ".expand("%:t"))
+    call append(line(".")+4, "#   Author       : BobLi")
+    call append(line(".")+5, "#   Email        : oxox0@qq.com")
+    call append(line(".")+6, "#   Create time  : ".strftime("%Y/%m/%d"))
+    call append(line(".")+7, "#   Description  :")
+    call append(line(".")+8, "#")
+    call append(line(".")+9, "#================================================================")
+    call append(line(".")+10, "")
+endfunc
+
+func SetTitle()
+    if expand("%:e") == "py" || expand("%:e") == "sh"
+        call SetComment2()
+    else
+        call SetComment1()
+    endif
+endfunc
+
 
 " -----------------------------------------------------------------------------
 "  < 界面配置 >
