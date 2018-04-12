@@ -159,7 +159,8 @@ Plugin 'nathanaelkane/vim-indent-guides'  " 缩进显示
 Plugin 'sjl/gundo.vim'                    " undo tree ,ud
 "Plugin 'dyng/ctrlsf.vim'                  " 搜索
 "Plugin 'ggreer/the_silver_searcher'       " ag
-Plugin 'iamcco/markdown-preview.vim'      " markdown preview
+Plugin 'xiaohaidao/markdown-preview.vim'  " markdown preview from iamcco/markdown-preview.vim'
+Plugin 'iamcco/mathjax-support-for-mkdp'  " markdown's mathjax plugin
 Plugin 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
 Plugin 'ervandew/supertab'                " Super tab
 Plugin 'SirVer/ultisnips'                 " Track the engine.
@@ -1040,9 +1041,9 @@ nmap <silent> <F9> <Plug>StopMarkdownPreview    " for normal mode
 imap <silent> <F9> <Plug>StopMarkdownPreview    " for insert mode
 
 if g:islinux
-    let g:mkdp_path_to_chrome = '/cygdrive/d/Program\ Files/Mozilla\ Firefox/firefox.exe'
+    let g:mkdp_path_to_chrome = 'firefox'
 else
-    let g:mkdp_path_to_chrome = 'D:\Program Files\Mozilla Firefox\firefox.exe'
+    let g:mkdp_path_to_chrome = 'firefox.exe'
 endif
 " -----------------------------------------------------------------------------
 "  < Doxygen Toolkit 插件配置 >
@@ -1079,7 +1080,7 @@ set runtimepath+=bundlepath.'YouCompleteMe'
 if (g:iswindows)
     let g:ycm_server_python_interpreter = "python.exe"
 else
-    let g:ycm_server_python_interpreter = "/usr/bin/python"
+    let g:ycm_server_python_interpreter = "python"
 endif
 
 set completeopt-=preview
