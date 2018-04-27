@@ -335,13 +335,13 @@ function Do_CsTag()
 endfunction
 
 func SetComment1()
-    call setline(1, "// Copyright (C) ".strftime("%Y")." Scorbra Li Ltd. All rights reserved.")
+    call setline(".", "// Copyright (C) ".strftime("%Y")." Scorbra Li Ltd. All rights reserved.")
     call append(line(".")+0, "// Email: oxox0@qq.com. Create by ".strftime("%Y%m"))
     call append(line(".")+1, "")
 endfunc
 
 func SetComment2()
-    call setline(1, "# Copyright (C) ".strftime("%Y")." Scorbra Li Ltd. All rights reserved.")
+    call setline(".", "# Copyright (C) ".strftime("%Y")." Scorbra Li Ltd. All rights reserved.")
     call append(line(".")+0, "# Email: oxox0@qq.com. Create by ".strftime("%Y%m"))
     call append(line(".")+1, "")
 endfunc
