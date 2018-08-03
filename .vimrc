@@ -157,7 +157,8 @@ Plugin 'scrooloose/syntastic'             " 语法检查 插件
 Plugin 'majutsushi/tagbar'                " 编程基本信息汇览 ,tb
 Plugin 'nathanaelkane/vim-indent-guides'  " 缩进显示
 Plugin 'sjl/gundo.vim'                    " undo tree ,ud
-"Plugin 'dyng/ctrlsf.vim'                  " 搜索
+Plugin 'dyng/ctrlsf.vim'                  " 搜索
+Plugin 'terryma/vim-multiple-cursors'     " Multiple cursor
 "Plugin 'ggreer/the_silver_searcher'       " ag
 Plugin 'xiaohaidao/markdown-preview.vim'  " markdown preview from iamcco/markdown-preview.vim'
 Plugin 'iamcco/mathjax-support-for-mkdp'  " markdown's mathjax plugin
@@ -1009,18 +1010,6 @@ let g:indent_guides_auto_colors = 1
 "hi IndentGuidesEven ctermbg=darkgrey
 "
 " -----------------------------------------------------------------------------
-"  <  插件配置 >
-" -----------------------------------------------------------------------------
-nmap     <C-F>f <Plug>CtrlSFPrompt
-vmap     <C-F>f <Plug>CtrlSFVwordPath
-vmap     <C-F>F <Plug>CtrlSFVwordExec
-nmap     <C-F>n <Plug>CtrlSFCwordPath
-nmap     <C-F>p <Plug>CtrlSFPwordPath
-nnoremap <C-F>o :CtrlSFOpen<CR>
-nnoremap <C-F>t :CtrlSFToggle<CR>
-inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
-"
-" -----------------------------------------------------------------------------
 "  < gundo 插件配置 >
 " -----------------------------------------------------------------------------
 "  You can use p on a state to make the preview window show the diff between
@@ -1032,6 +1021,32 @@ nnoremap <leader>ud :GundoToggle<CR>
 " -----------------------------------------------------------------------------
 let g:ctrlsf_ackprg = 'ag'
 "
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+vmap     <C-F>F <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
+nnoremap <C-F>t :CtrlSFToggle<CR>
+inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+"
+" -----------------------------------------------------------------------------
+"  < multi_cursor 插件配置 >
+" -----------------------------------------------------------------------------
+let g:multi_cursor_use_default_mapping=0
+
+" Default mapping
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<A-n>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
+
+nnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
+vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
 " -----------------------------------------------------------------------------
 "  < MarkDown Preview 插件配置 >
 " -----------------------------------------------------------------------------
