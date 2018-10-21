@@ -320,9 +320,9 @@ function Do_CsTag()
     if(executable('cscope') && has("cscope") )
         if !filereadable("cscope.files")
             if(g:iswindows!=1)
-                silent! execute "!find . -name '*.h' -o -iname '*.s' -o -name '*.c' -o -name '*.cpp' -o -iname '*.go'> cscope.files"
+                silent! execute "!find . -name '*.h' -o iname "*.hpp" -o -iname '*.s' -o -name '*.c' -o -name '*.cpp' -o -iname '*.go'> cscope.files"
             else
-                silent! execute "!dir /s/b *.c,*.cpp,*.h,*.go >> cscope.files"
+                silent! execute "!dir /s/b *.c,*.cpp,*.h,*.hpp,*.go >> cscope.files"
             endif
         endif
         silent! execute "!cscope -Rbq"
