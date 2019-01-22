@@ -160,7 +160,8 @@ Plugin 'sjl/gundo.vim'                    " undo tree ,ud
 Plugin 'dyng/ctrlsf.vim'                  " 搜索
 Plugin 'terryma/vim-multiple-cursors'     " Multiple cursor
 "Plugin 'ggreer/the_silver_searcher'       " ag
-Plugin 'xiaohaidao/markdown-preview.vim'  " markdown preview from iamcco/markdown-preview.vim'
+"Plugin 'xiaohaidao/markdown-preview.vim  k'  " markdown preview from iamcco/markdown-preview.vim'
+Plugin 'iamcco/markdown-preview.nvim'     " markdown preview on vim >= 8.1 and neovim
 Plugin 'iamcco/mathjax-support-for-mkdp'  " markdown's mathjax plugin
 Plugin 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
 Plugin 'ervandew/supertab'                " Super tab
@@ -1052,8 +1053,8 @@ vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
 " -----------------------------------------------------------------------------
 nmap <silent> <F8> <Plug>MarkdownPreview        " for normal mode
 imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
-nmap <silent> <F9> <Plug>StopMarkdownPreview    " for normal mode
-imap <silent> <F9> <Plug>StopMarkdownPreview    " for insert mode
+nmap <silent> <F9> <Plug>MarkdownPreviewStop    " for normal mode
+imap <silent> <F9> <Plug>MarkdownPreviewStop    " for insert mode
 
 if g:islinux
     let g:mkdp_path_to_chrome = 'firefox'
