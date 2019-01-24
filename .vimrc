@@ -115,64 +115,57 @@ endif
 " =============================================================================
 
 " -----------------------------------------------------------------------------
-"  < Vundle 插件管理工具配置 >
+"  < Vim 插件管理工具配置 >
 " -----------------------------------------------------------------------------
-" 用于更方便的管理vim插件，具体用法参考 :h vundle 帮助
-" Vundle工具安装方法为在终端输入如下命令
-" git clone https://github.com/vundlevim/vundle.vim.git ~/.vim/bundle/Vundle.vim
-" 如果想在 windows 安装就必需先安装 "git for window"，可查阅网上资料
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 set nocompatible                                      "禁用 Vi 兼容模式
 filetype off                                          "禁用文件类型侦测
 
 if g:islinux
-    set rtp+=~/.vim/bundle/Vundle.vim
-    let bundlepath='~/.vim/bundle/'
-    call vundle#begin()
+    let plugPath='~/.vim/plugged/'
+    call plug#begin('~/.vim/plugged')
 else
-    set rtp+=$HOME/vimfiles/bundle/Vundle.vim
-    let bundlepath=$HOME.'/vimfiles/bundle/'
-    call vundle#begin('$HOME/vimfiles/bundle/')
+    let plugPath=$HOME.'/vimfiles/plugged/'
+    call plug#begin('$HOME/vimfiles/plugged/')
 endif
-
-" 使用Vundle来管理插件，这个必须要有。
-Plugin 'VundleVim/Vundle.vim'
 
 " 以下为要安装或更新的插件，不同仓库都有（具体书写规范请参考帮助）
 " General Programming
 " {
-Plugin 'jiangmiao/auto-pairs'             " 自动括号
-Plugin 'tomasr/molokai'                   " 配色方案
-Plugin 'altercation/vim-colors-solarized' " 配色方案
-Plugin 'scrooloose/nerdtree'              " 文件浏览 <leader>e
-Plugin 'tpope/vim-surround'               " 替换cs]}
-Plugin 'ctrlpvim/ctrlp.vim'               " c-p查找文件
-Plugin 'tacahiroy/ctrlp-funky'            " ctrlp拓展 ,fu
-Plugin 'godlygeek/tabular'                " 通过符号对齐 ,a
-Plugin 'scrooloose/nerdcommenter'         " 注释 <leader>c<space>
-"Plugin 'tpope/vim-fugitive'               " git 插件
-Plugin 'vim-airline/vim-airline'          " 状态栏 插件
-Plugin 'vim-airline/vim-airline-themes'   " 状态栏 插件
-Plugin 'scrooloose/syntastic'             " 语法检查 插件
-Plugin 'majutsushi/tagbar'                " 编程基本信息汇览 ,tb
-Plugin 'nathanaelkane/vim-indent-guides'  " 缩进显示
-Plugin 'sjl/gundo.vim'                    " undo tree ,ud
-Plugin 'dyng/ctrlsf.vim'                  " 搜索
-Plugin 'terryma/vim-multiple-cursors'     " Multiple cursor
-"Plugin 'ggreer/the_silver_searcher'       " ag
-"Plugin 'xiaohaidao/markdown-preview.vim  k'  " markdown preview from iamcco/markdown-preview.vim'
-Plugin 'iamcco/markdown-preview.nvim'     " markdown preview on vim >= 8.1 and neovim
-Plugin 'iamcco/mathjax-support-for-mkdp'  " markdown's mathjax plugin
-Plugin 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
-Plugin 'ervandew/supertab'                " Super tab
-Plugin 'SirVer/ultisnips'                 " Track the engine.
-Plugin 'honza/vim-snippets'               " Snippets are separated from the engine
-Plugin 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
-"Plugin 'fatih/vim-go'                     " Golang plugin
-"Plugin 'Valloric/YouCompleteMe'           " YouCompleteMe
+Plug 'jiangmiao/auto-pairs'             " 自动括号
+Plug 'tomasr/molokai'                   " 配色方案
+Plug 'altercation/vim-colors-solarized' " 配色方案
+Plug 'scrooloose/nerdtree'              " 文件浏览 <leader>e
+Plug 'tpope/vim-surround'               " 替换cs]}
+Plug 'ctrlpvim/ctrlp.vim'               " c-p查找文件
+Plug 'tacahiroy/ctrlp-funky'            " ctrlp拓展 ,fu
+Plug 'godlygeek/tabular'                " 通过符号对齐 ,a
+Plug 'scrooloose/nerdcommenter'         " 注释 <leader>c<space>
+"Plug 'tpope/vim-fugitive'               " git 插件
+Plug 'vim-airline/vim-airline'          " 状态栏 插件
+Plug 'vim-airline/vim-airline-themes'   " 状态栏 插件
+Plug 'scrooloose/syntastic'             " 语法检查 插件
+Plug 'majutsushi/tagbar'                " 编程基本信息汇览 ,tb
+Plug 'nathanaelkane/vim-indent-guides'  " 缩进显示
+Plug 'sjl/gundo.vim'                    " undo tree ,ud
+Plug 'dyng/ctrlsf.vim'                  " 搜索
+Plug 'terryma/vim-multiple-cursors'     " Multiple cursor
+"Plug 'ggreer/the_silver_searcher'       " ag
+"Plug 'xiaohaidao/markdown-preview.vim'  " markdown preview from iamcco/markdown-preview.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}     " markdown preview on vim >= 8.1 and neovim
+Plug 'iamcco/mathjax-support-for-mkdp'  " markdown's mathjax plugin
+Plug 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
+Plug 'ervandew/supertab'                " Super tab
+Plug 'SirVer/ultisnips'                 " Track the engine.
+Plug 'honza/vim-snippets'               " Snippets are separated from the engine
+Plug 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
+"Plug 'fatih/vim-go'                     " Golang plugin
+Plug 'Valloric/YouCompleteMe'           " YouCompleteMe
 " }
 
-call vundle#end()
+call plug#end()
 "
 "" Brief help
 " :PluginList       - lists configured plugins
@@ -1091,8 +1084,8 @@ let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 "YouCompleteMe 通过这个cm_global_ycm_extra_conf来获得补全规则，可以如下指定，也可以每次放置在工作目录
-let g:ycm_global_ycm_extra_conf=bundlepath.'YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-set runtimepath+=bundlepath.'YouCompleteMe'
+let g:ycm_global_ycm_extra_conf=plugPath.'YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+set runtimepath+=plugPath.'YouCompleteMe'
 if (g:iswindows)
     let g:ycm_server_python_interpreter = "python.exe"
 else
