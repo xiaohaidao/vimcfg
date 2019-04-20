@@ -143,17 +143,15 @@ Plug 'ctrlpvim/ctrlp.vim'               " c-p查找文件
 Plug 'tacahiroy/ctrlp-funky'            " ctrlp拓展 ,fu
 Plug 'godlygeek/tabular'                " 通过符号对齐 ,a
 Plug 'scrooloose/nerdcommenter'         " 注释 <leader>c<space>
-"Plug 'tpope/vim-fugitive'               " git 插件
 Plug 'vim-airline/vim-airline'          " 状态栏 插件
 Plug 'vim-airline/vim-airline-themes'   " 状态栏 插件
-Plug 'scrooloose/syntastic'             " 语法检查 插件
+Plug 'vim-syntastic/syntastic'          " 语法检查 插件
 Plug 'majutsushi/tagbar'                " 编程基本信息汇览 ,tb
 Plug 'nathanaelkane/vim-indent-guides'  " 缩进显示
 Plug 'sjl/gundo.vim'                    " undo tree ,ud
 Plug 'dyng/ctrlsf.vim'                  " 搜索
 Plug 'terryma/vim-multiple-cursors'     " Multiple cursor
 "Plug 'ggreer/the_silver_searcher'       " ag
-"Plug 'xiaohaidao/markdown-preview.vim'  " markdown preview from iamcco/markdown-preview.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}     " markdown preview on vim >= 8.1 and neovim
 Plug 'iamcco/mathjax-support-for-mkdp'  " markdown's mathjax plugin
 Plug 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
@@ -161,8 +159,8 @@ Plug 'ervandew/supertab'                " Super tab
 Plug 'SirVer/ultisnips'                 " Track the engine.
 Plug 'honza/vim-snippets'               " Snippets are separated from the engine
 Plug 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
-"Plug 'fatih/vim-go'                     " Golang plugin
 Plug 'Valloric/YouCompleteMe'           " YouCompleteMe
+Plug 'neovimhaskell/haskell-vim'        " Haskell indentation and highlighting
 " }
 
 call plug#end()
@@ -225,17 +223,13 @@ set ignorecase                                        "搜索模式里忽略大�
 set smartcase                                         "如果搜索模式包含大写字符，不使用 'ignorecase' 选项，只有在输入搜索模式并且打开 'ignorecase' 选项时才会使用
 " set noincsearch                                       "在输入要搜索的文字时，取消实时匹配
 
-" Ctrl + K 插入模式下光标向上移动
-imap <c-k> <Up>
-
-" Ctrl + J 插入模式下光标向下移动
-imap <c-j> <Down>
-
-" Ctrl + H 插入模式下光标向左移动
-imap <c-h> <Left>
-
-" Ctrl + L 插入模式下光标向右移动
-imap <c-l> <Right>
+" Ctrl + * 插入模式下光标移动
+imap <s-a-k> <Up>
+imap <s-a-j> <Down>
+imap <s-a-h> <Left>
+imap <s-a-l> <Right>
+imap <s-a-b> <C-Left>
+imap <s-a-f> <C-Right>
 
 " 启用每行超过80列的字符提示（字体变蓝并加下划线），不启用就注释掉
 au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
@@ -1086,11 +1080,7 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 "YouCompleteMe 通过这个cm_global_ycm_extra_conf来获得补全规则，可以如下指定，也可以每次放置在工作目录
 let g:ycm_global_ycm_extra_conf=plugPath.'YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 set runtimepath+=plugPath.'YouCompleteMe'
-if (g:iswindows)
-    let g:ycm_server_python_interpreter = "python.exe"
-else
-    let g:ycm_server_python_interpreter = "python"
-endif
+let g:ycm_server_python_interpreter = "python"
 
 set completeopt-=preview
 let g:ycm_confirm_extra_conf=0
