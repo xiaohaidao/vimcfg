@@ -161,6 +161,7 @@ Plug 'honza/vim-snippets'               " Snippets are separated from the engine
 Plug 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
 Plug 'Valloric/YouCompleteMe'           " YouCompleteMe
 Plug 'neovimhaskell/haskell-vim'        " Haskell indentation and highlighting
+Plug 'xiaohaidao/personal.vim'          " Personal repository
 " }
 
 call plug#end()
@@ -1043,11 +1044,7 @@ imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
 nmap <silent> <F9> <Plug>MarkdownPreviewStop    " for normal mode
 imap <silent> <F9> <Plug>MarkdownPreviewStop    " for insert mode
 
-if g:islinux
-    let g:mkdp_path_to_chrome = 'firefox'
-else
-    let g:mkdp_path_to_chrome = 'firefox.exe'
-endif
+let g:mkdp_path_to_chrome = 'firefox'
 " -----------------------------------------------------------------------------
 "  < Doxygen Toolkit 插件配置 >
 " -----------------------------------------------------------------------------
