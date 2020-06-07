@@ -161,6 +161,7 @@ Plug 'honza/vim-snippets'               " Snippets are separated from the engine
 Plug 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
 Plug 'Valloric/YouCompleteMe'           " YouCompleteMe
 Plug 'neovimhaskell/haskell-vim'        " Haskell indentation and highlighting
+Plug 'rust-lang/rust.vim'               " Rust language file detection, syntax highlighting formatting and so on
 Plug 'xiaohaidao/personal.vim'          " Personal repository
 " }
 
