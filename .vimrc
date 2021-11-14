@@ -148,21 +148,25 @@ Plug 'vim-airline/vim-airline-themes'   " 状态栏 插件
 Plug 'vim-syntastic/syntastic'          " 语法检查 插件
 Plug 'majutsushi/tagbar'                " 编程基本信息汇览 ,tb
 Plug 'nathanaelkane/vim-indent-guides'  " 缩进显示
-Plug 'sjl/gundo.vim'                    " undo tree ,ud
 Plug 'dyng/ctrlsf.vim'                  " 搜索
 Plug 'terryma/vim-multiple-cursors'     " Multiple cursor
-"Plug 'ggreer/the_silver_searcher'       " ag
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}     " markdown preview on vim >= 8.1 and neovim
-Plug 'iamcco/mathjax-support-for-mkdp'  " markdown's mathjax plugin
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}     " markdown preview on vim >= 8.1 and neovim
 Plug 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
 Plug 'ervandew/supertab'                " Super tab
 Plug 'SirVer/ultisnips'                 " Track the engine.
 Plug 'honza/vim-snippets'               " Snippets are separated from the engine
 Plug 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
-Plug 'Valloric/YouCompleteMe'           " YouCompleteMe
 Plug 'neovimhaskell/haskell-vim'        " Haskell indentation and highlighting
 Plug 'rust-lang/rust.vim'               " Rust language file detection, syntax highlighting formatting and so on
 Plug 'xiaohaidao/personal.vim'          " Personal repository
+
+if has("Win64")
+Plug 'snakeleon/YouCompleteMe-x64', { 'dir': plugPath.'YouCompleteMe' }
+elseif has("Win32")
+Plug 'snakeleon/YouCompleteMe-x86', { 'dir': plugPath.'YouCompleteMe' }
+else
+Plug 'Valloric/YouCompleteMe'           " YouCompleteMe
+endif
 " }
 
 call plug#end()
@@ -396,345 +400,6 @@ if g:isGUI
 endif
 
 " -----------------------------------------------------------------------------
-"  < 编译、连接、运行配置 (目前只配置了C、C++、Java语言、python)>
-" -----------------------------------------------------------------------------
-" F9 一键保存、编译、连接存并运行
-nmap <F9> :call Run()<CR>
-imap <F9> <ESC>:call Run()<CR>
-
-" Ctrl + F9 一键保存并编译
-nmap <c-F9> :call Compile()<CR>
-imap <c-F9> <ESC>:call Compile()<CR>
-
-" Ctrl + F10 一键保存并连接
-nmap <c-F10> :call Link()<CR>
-imap <c-F10> <ESC>:call Link()<CR>
-
-let s:LastShellReturn_C = 0
-let s:LastShellReturn_L = 0
-let s:ShowWarning = 1
-let s:Obj_Extension = '.o'
-let s:Exe_Extension = '.exe'
-let s:Class_Extension = '.class'
-let s:Sou_Error = 0
-
-let s:windows_CFlags = 'gcc\ -fexec-charset=gbk\ -Wall\ -g\ -O0\ -c\ %\ -o\ %<.o'
-let s:linux_CFlags = 'gcc\ -Wall\ -g\ -O0\ -c\ %\ -o\ %<.o'
-
-let s:windows_CPPFlags = 'g++\ -fexec-charset=gbk\ -Wall\ -g\ -O0\ -c\ %\ -o\ %<.o'
-let s:linux_CPPFlags = 'g++\ -Wall\ -g\ -O0\ -c\ %\ -o\ %<.o'
-
-let s:JavaFlags = 'javac\ %'
-
-func! Compile()
-    exe ":ccl"
-    exe ":update"
-    let s:Sou_Error = 0
-    let s:LastShellReturn_C = 0
-    let Sou = expand("%:p")
-    let v:statusmsg = ''
-    if expand("%:e") == "c" || expand("%:e") == "cpp" || expand("%:e") == "cxx"
-        let Obj = expand("%:p:r").s:Obj_Extension
-        let Obj_Name = expand("%:p:t:r").s:Obj_Extension
-        if !filereadable(Obj) || (filereadable(Obj) && (getftime(Obj) < getftime(Sou)))
-            redraw!
-            if expand("%:e") == "c"
-                if g:iswindows
-                    exe ":setlocal makeprg=".s:windows_CFlags
-                else
-                    exe ":setlocal makeprg=".s:linux_CFlags
-                endif
-                echohl WarningMsg | echo " compiling..."
-                silent make
-            elseif expand("%:e") == "cpp" || expand("%:e") == "cxx"
-                if g:iswindows
-                    exe ":setlocal makeprg=".s:windows_CPPFlags
-                else
-                    exe ":setlocal makeprg=".s:linux_CPPFlags
-                endif
-                echohl WarningMsg | echo " compiling..."
-                silent make
-            endif
-            redraw!
-            if v:shell_error != 0
-                let s:LastShellReturn_C = v:shell_error
-            endif
-            if g:iswindows
-                if s:LastShellReturn_C != 0
-                    exe ":bo cope"
-                    echohl WarningMsg | echo " compilation failed"
-                else
-                    if s:ShowWarning
-                        exe ":bo cw"
-                    endif
-                    echohl WarningMsg | echo " compilation successful"
-                endif
-            else
-                if empty(v:statusmsg)
-                    echohl WarningMsg | echo " compilation successful"
-                else
-                    exe ":bo cope"
-                endif
-            endif
-        else
-            echohl WarningMsg | echo ""Obj_Name"is up to date"
-        endif
-    elseif expand("%:e") == "java"
-        let class = expand("%:p:r").s:Class_Extension
-        let class_Name = expand("%:p:t:r").s:Class_Extension
-        if !filereadable(class) || (filereadable(class) && (getftime(class) < getftime(Sou)))
-            redraw!
-            exe ":setlocal makeprg=".s:JavaFlags
-            echohl WarningMsg | echo " compiling..."
-            silent make
-            redraw!
-            if v:shell_error != 0
-                let s:LastShellReturn_C = v:shell_error
-            endif
-            if g:iswindows
-                if s:LastShellReturn_C != 0
-                    exe ":bo cope"
-                    echohl WarningMsg | echo " compilation failed"
-                else
-                    if s:ShowWarning
-                        exe ":bo cw"
-                    endif
-                    echohl WarningMsg | echo " compilation successful"
-                endif
-            else
-                if empty(v:statusmsg)
-                    echohl WarningMsg | echo " compilation successful"
-                else
-                    exe ":bo cope"
-                endif
-            endif
-        else
-            echohl WarningMsg | echo ""class_Name"is up to date"
-        endif
-    else
-        let s:Sou_Error = 1
-        echohl WarningMsg | echo " please choose the correct source file"
-    endif
-    exe ":setlocal makeprg=make"
-endfunc
-
-func! Link()
-    call Compile()
-    if s:Sou_Error || s:LastShellReturn_C != 0
-        return
-    endif
-    if expand("%:e") == "c" || expand("%:e") == "cpp" || expand("%:e") == "cxx"
-        let s:LastShellReturn_L = 0
-        let Sou = expand("%:p")
-        let Obj = expand("%:p:r").s:Obj_Extension
-        if g:iswindows
-            let Exe = expand("%:p:r").s:Exe_Extension
-            let Exe_Name = expand("%:p:t:r").s:Exe_Extension
-        else
-            let Exe = expand("%:p:r")
-            let Exe_Name = expand("%:p:t:r")
-        endif
-        let v:statusmsg = ''
-        if filereadable(Obj) && (getftime(Obj) >= getftime(Sou))
-            redraw!
-            if !executable(Exe) || (executable(Exe) && getftime(Exe) < getftime(Obj))
-                if expand("%:e") == "c"
-                    setlocal makeprg=gcc\ -o\ %<\ %<.o
-                    echohl WarningMsg | echo " linking..."
-                    silent make
-                elseif expand("%:e") == "cpp" || expand("%:e") == "cxx"
-                    setlocal makeprg=g++\ -o\ %<\ %<.o
-                    echohl WarningMsg | echo " linking..."
-                    silent make
-                endif
-                redraw!
-                if v:shell_error != 0
-                    let s:LastShellReturn_L = v:shell_error
-                endif
-                if g:iswindows
-                    if s:LastShellReturn_L != 0
-                        exe ":bo cope"
-                        echohl WarningMsg | echo " linking failed"
-                    else
-                        if s:ShowWarning
-                            exe ":bo cw"
-                        endif
-                        echohl WarningMsg | echo " linking successful"
-                    endif
-                else
-                    if empty(v:statusmsg)
-                        echohl WarningMsg | echo " linking successful"
-                    else
-                        exe ":bo cope"
-                    endif
-                endif
-            else
-                echohl WarningMsg | echo ""Exe_Name"is up to date"
-            endif
-        endif
-        setlocal makeprg=make
-    elseif expand("%:e") == "java"
-        return
-    endif
-endfunc
-
-func! Run()
-    if &filetype == "python"
-        exe ":ccl"
-        exe ":update"
-        exe ":!python %"
-    else
-        let s:ShowWarning = 0
-        call Link()
-        let s:ShowWarning = 1
-        if s:Sou_Error || s:LastShellReturn_C != 0 || s:LastShellReturn_L != 0
-            return
-        endif
-        let Sou = expand("%:p")
-        if expand("%:e") == "c" || expand("%:e") == "cpp" || expand("%:e") == "cxx"
-            let Obj = expand("%:p:r").s:Obj_Extension
-            if g:iswindows
-                let Exe = expand("%:p:r").s:Exe_Extension
-            else
-                let Exe = expand("%:p:r")
-            endif
-            if executable(Exe) && getftime(Exe) >= getftime(Obj) && getftime(Obj) >= getftime(Sou)
-                redraw!
-                echohl WarningMsg | echo " running..."
-                if g:iswindows
-                    exe ":!%<.exe"
-                else
-                    if g:isGUI
-                        exe ":!gnome-terminal -x bash -c './%<; echo; echo 请按 Enter 键继续; read'"
-                    else
-                        exe ":!clear; ./%<"
-                    endif
-                endif
-                redraw!
-                echohl WarningMsg | echo " running finish"
-            endif
-        elseif expand("%:e") == "java"
-            let class = expand("%:p:r").s:Class_Extension
-            if getftime(class) >= getftime(Sou)
-                redraw!
-                echohl WarningMsg | echo " running..."
-                if g:iswindows
-                    exe ":!java %<"
-                else
-                    if g:isGUI
-                        exe ":!gnome-terminal -x bash -c 'java %<; echo; echo 请按 Enter 键继续; read'"
-                    else
-                        exe ":!clear; java %<"
-                    endif
-                endif
-                redraw!
-                echohl WarningMsg | echo " running finish"
-            endif
-        endif
-    endif
-endfunc
-
-
-
-" -----------------------------------------------------------------------------
-"  < 在浏览器中预览 Html 或 PHP 文件 >
-" -----------------------------------------------------------------------------
-" 修改前请先通读此模块，明白了再改以避免错误
-
-" F5 加浏览器名称缩写调用浏览器预览，启用前先确定有安装相应浏览器，并在下面的配置好其安装目录
-if g:iswindows
-    "以下为只支持Windows系统的浏览器
-
-    " 调用系统IE浏览器预览，如果已卸载可将其注释
-    nmap <F5>ie :call ViewInBrowser("ie")<cr>
-    imap <F5>ie <ESC>:call ViewInBrowser("ie")<cr>
-
-    " 调用IETester(IE测试工具)预览，如果有安装可取消注释
-    " nmap <F5>ie6 :call ViewInBrowser("ie6")<cr>
-    " imap <F5>ie6 <ESC>:call ViewInBrowser("ie6")<cr>
-    " nmap <F5>ie7 :call ViewInBrowser("ie7")<cr>
-    " imap <F5>ie7 <ESC>:call ViewInBrowser("ie7")<cr>
-    " nmap <F5>ie8 :call ViewInBrowser("ie8")<cr>
-    " imap <F5>ie8 <ESC>:call ViewInBrowser("ie8")<cr>
-    " nmap <F5>ie9 :call ViewInBrowser("ie9")<cr>
-    " imap <F5>ie9 <ESC>:call ViewInBrowser("ie9")<cr>
-    " nmap <F5>ie10 :call ViewInBrowser("ie10")<cr>
-    " imap <F5>ie10 <ESC>:call ViewInBrowser("ie10")<cr>
-    " nmap <F5>iea :call ViewInBrowser("iea")<cr>
-    " imap <F5>iea <ESC>:call ViewInBrowser("iea")<cr>
-elseif g:islinux
-    "以下为只支持Linux系统的浏览器
-    "暂未配置，待有时间再弄了
-endif
-
-"以下为支持Windows与Linux系统的浏览器
-
-" 调用Firefox浏览器预览，如果有安装可取消注释
-" nmap <F5>ff :call ViewInBrowser("ff")<cr>
-" imap <F5>ff <ESC>:call ViewInBrowser("ff")<cr>
-
-" 调用Maxthon(遨游)浏览器预览，如果有安装可取消注释
-" nmap <F5>ay :call ViewInBrowser("ay")<cr>
-" imap <F5>ay <ESC>:call ViewInBrowser("ay")<cr>
-
-" 调用Opera浏览器预览，如果有安装可取消注释
-" nmap <F5>op :call ViewInBrowser("op")<cr>
-" imap <F5>op <ESC>:call ViewInBrowser("op")<cr>
-
-" 调用Chrome浏览器预览，如果有安装可取消注释
-" nmap <F5>cr :call ViewInBrowser("cr")<cr>
-" imap <F5>cr <ESC>:call ViewInBrowser("cr")<cr>
-
-" 浏览器调用函数
-function! ViewInBrowser(name)
-    if expand("%:e") == "php" || expand("%:e") == "html"
-        exe ":update"
-        if g:iswindows
-            "获取要预览的文件路径，并将路径中的'\'替换为'/'，同时将路径文字的编码转换为gbk（同cp936）
-            let file = iconv(substitute(expand("%:p"), '\', '/', "g"), "utf-8", "gbk")
-
-            "浏览器路径设置，路径中使用'/'斜杠，更改路径请更改双引号里的内容
-            "下面只启用了系统IE浏览器，如需启用其它的可将其取消注释（得先安装，并配置好安装路径），也可按需增减
-            let SystemIE = "C:/progra~1/intern~1/iexplore.exe"  "系统自带IE目录
-            " let IETester = "F:/IETester/IETester.exe"           "IETester程序目录（可按实际更改）
-            " let Chrome = "F:/Chrome/Chrome.exe"                 "Chrome程序目录（可按实际更改）
-            " let Firefox = "F:/Firefox/Firefox.exe"              "Firefox程序目录（可按实际更改）
-            " let Opera = "F:/Opera/opera.exe"                    "Opera程序目录（可按实际更改）
-            " let Maxthon = "C:/Progra~2/Maxthon/Bin/Maxthon.exe" "Maxthon程序目录（可按实际更改）
-
-            "本地虚拟服务器设置，我测试的是phpStudy2014，可根据自己的修改，更改路径请更改双引号里的内容
-            let htdocs ="F:/phpStudy2014/WWW/"                  "虚拟服务器地址或目录（可按实际更改）
-            let url = "localhost"                               "虚拟服务器网址（可按实际更改）
-        elseif g:islinux
-            "暂时还没有配置，有时间再弄了。
-        endif
-
-        "浏览器调用缩写，可根据实际增减，注意，上面浏览器路径中没有定义过的变量（等号右边为变量）不能出现在下面哟（可将其注释或删除）
-        let l:browsers = {}                             "定义缩写字典变量，此行不能删除或注释
-        " let l:browsers["cr"] = Chrome                   "Chrome浏览器缩写
-        " let l:browsers["ff"] = Firefox                  "Firefox浏览器缩写
-        " let l:browsers["op"] = Opera                    "Opera浏览器缩写
-        " let l:browsers["ay"] = Maxthon                  "遨游浏览器缩写
-        let l:browsers["ie"] = SystemIE                 "系统IE浏览器缩写
-        " let l:browsers["ie6"] = IETester."-ie6"         "调用IETESTER工具以IE6预览缩写（变量加参数）
-        " let l:browsers["ie7"] = IETester."-ie7"         "调用IETESTER工具以IE7预览缩写（变量加参数）
-        " let l:browsers["ie8"] = IETester."-ie8"         "调用IETESTER工具以IE8预览缩写（变量加参数）
-        " let l:browsers["ie9"] = IETester."-ie9"         "调用IETESTER工具以IE9预览缩写（变量加参数）
-        " let l:browsers["ie10"] = IETester."-ie10"       "调用IETESTER工具以IE10预览缩写（变量加参数）
-        " let l:browsers["iea"] = IETester."-al"          "调用IETESTER工具以支持的所有IE版本预览缩写（变量加参数）
-
-        if stridx(file, htdocs) == -1   "文件不在本地虚拟服务器目录，则直接预览（但不能解析PHP文件）
-            exec ":silent !start ". l:browsers[a:name] ." file://" . file
-        else    "文件在本地虚拟服务器目录，则调用本地虚拟服务器解析预览（先启动本地虚拟服务器）
-            let file = substitute(file, htdocs, "http://".url."/", "g")    "转换文件路径为虚拟服务器网址路径
-            exec ":silent !start ". l:browsers[a:name] file
-        endif
-    else
-        echohl WarningMsg | echo " please choose the correct source file"
-    endif
-endfunction
-
-" -----------------------------------------------------------------------------
 "  < 其它配置 >
 " -----------------------------------------------------------------------------
 set writebackup                             "保存文件前建立备份，保存成功后删除该备份
@@ -928,41 +593,6 @@ let g:tagbar_width=30                       "设置窗口宽度
 " let g:tagbar_left=1                         "在左侧窗口中显示
 
 " -----------------------------------------------------------------------------
-"  < Fugitive 插件配置 >
-" -----------------------------------------------------------------------------
-"
-"Fugitive adds pervasive git support to git directories in vim. For more information, use :help fugitive
-"
-"Use :Gstatus to view git status and type - on any file to stage or unstage it. Type p on a file to enter git add -p and stage specific hunks in the file.
-"
-"Use :Gdiff on an open file to see what changes have been made to that file
-"
-"QuickStart <leader>gs to bring up git status
-"
-"Customizations
-"
-"    <leader>gs :Gstatus
-"    <leader>gd :Gdiff
-"    <leader>gc :Gcommit
-"    <leader>gb :Gblame
-"    <leader>gl :Glog
-"    <leader>gp :Git push
-"    <leader>gw :Gwrite
-"    :Git ___ will pass anything along to git.
-nnoremap <silent> <leader>gs :Gstatus<CR>
-nnoremap <silent> <leader>gd :Gdiff<CR>
-nnoremap <silent> <leader>gc :Gcommit<CR>
-nnoremap <silent> <leader>gb :Gblame<CR>
-nnoremap <silent> <leader>gl :Glog<CR>
-nnoremap <silent> <leader>gp :Git push<CR>
-nnoremap <silent> <leader>gr :Gread<CR>
-nnoremap <silent> <leader>gw :Gwrite<CR>
-nnoremap <silent> <leader>ge :Gedit<CR>
-" Mnemonic _i_nteractive
-nnoremap <silent> <leader>gi :Git add -p %<CR>
-nnoremap <silent> <leader>gg :SignifyToggle<CR>
-
-" -----------------------------------------------------------------------------
 "  < vim-airline 插件配置 >
 " -----------------------------------------------------------------------------
 " Set configuration options for the statusline plugin vim-airline.
@@ -998,14 +628,7 @@ let g:indent_guides_auto_colors = 1
 " 终端
 "hi IndentGuidesOdd  ctermbg=black
 "hi IndentGuidesEven ctermbg=darkgrey
-"
-" -----------------------------------------------------------------------------
-"  < gundo 插件配置 >
-" -----------------------------------------------------------------------------
-"  You can use p on a state to make the preview window show the diff between
-"  your current state and the selected state, instead of a preview of what the selected state changed.
-nnoremap <leader>ud :GundoToggle<CR>
-"
+
 " -----------------------------------------------------------------------------
 "  < ctrlsf 插件配置 >
 " -----------------------------------------------------------------------------
