@@ -146,7 +146,7 @@ Plug 'scrooloose/nerdcommenter'         " 注释 <leader>c<space>
 Plug 'vim-airline/vim-airline'          " 状态栏 插件
 Plug 'vim-airline/vim-airline-themes'   " 状态栏 插件
 Plug 'vim-syntastic/syntastic'          " 语法检查 插件
-Plug 'majutsushi/tagbar'                " 编程基本信息汇览 ,tb
+Plug 'preservim/tagbar'                 " 编程基本信息汇览 ,tb
 Plug 'nathanaelkane/vim-indent-guides'  " 缩进显示
 Plug 'dyng/ctrlsf.vim'                  " 搜索
 Plug 'terryma/vim-multiple-cursors'     " Multiple cursor
@@ -156,9 +156,10 @@ Plug 'ervandew/supertab'                " Super tab
 Plug 'SirVer/ultisnips'                 " Track the engine.
 Plug 'honza/vim-snippets'               " Snippets are separated from the engine
 Plug 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
-Plug 'neovimhaskell/haskell-vim'        " Haskell indentation and highlighting
-Plug 'rust-lang/rust.vim'               " Rust language file detection, syntax highlighting formatting and so on
 Plug 'xiaohaidao/personal.vim'          " Personal repository
+Plug 'sheerun/vim-polyglot'             " A collection of language packs for vim
+Plug 'ludovicchabant/vim-gutentags'     " Plugin will update gtags database in background automatically
+Plug 'skywind3000/gutentags_plus'       " works with gutentags and provides seemless databases switching
 
 if has("Win64")
 Plug 'snakeleon/YouCompleteMe-x64', { 'dir': plugPath.'YouCompleteMe' }
@@ -241,93 +242,7 @@ imap <s-a-f> <C-Right>
 au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
 "
 "个人快捷键喜好配置
-map <Leader>td :call Do_CsDel() <CR>
-map <Leader>tt :call Do_CsTag() <CR>
 map <Leader>adt :call SetTitle() <CR>
-
-"更新tags和cscope
-func! Do_CsDel()
-    let dir = getcwd()
-    if filereadable("tags")
-        if(g:iswindows==1)
-            let tagsdeleted=delete(dir."\\"."tags")
-        else
-            let tagsdeleted=delete("./"."tags")
-        endif
-        if(tagsdeleted!=0)
-            echohl WarningMsg | echo "Fail to do tags! I cannot delete the tags" | echohl None
-            return
-        endif
-    endif
-
-    if has("cscope")
-        silent! execute "cs kill -1"
-    endif
-
-    if filereadable("cscope.files")
-        if(g:iswindows==1)
-            let csfilesdeleted=delete(dir."\\"."cscope.files")
-        else
-            let csfilesdeleted=delete("./"."cscope.files")
-        endif
-        if(csfilesdeleted!=0)
-            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.files" | echohl None
-            return
-        endif
-    endif
-
-    if filereadable("cscope.out")
-        if(g:iswindows==1)
-            let csoutdeleted=delete(dir."\\"."cscope.out")
-        else
-            let csoutdeleted=delete("./"."cscope.out")
-        endif
-        if(csoutdeleted!=0)
-            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.out" | echohl None
-            return
-        endif
-    endif
-
-    if (filereadable("cscope.in.out") ||filereadable("cscope.po.out"))
-        if(g:iswindows==1)
-            let csoutdeleted=delete(dir."\\"."cscope.in.out")
-            let csoutdeleted=delete(dir."\\"."cscope.po.out")
-        else
-            let csoutdeleted=delete("./"."cscope.in.out")
-            let csoutdeleted=delete("./"."cscope.po.out")
-        endif
-        if(csoutdeleted!=0)
-            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.in.out and cscope.po.out" | echohl None
-            return
-        endif
-    endif
-endfunc
-
-function Do_CsTag()
-    "call Do_CsDel()
-    if(executable('ctags'))
-        "silent! execute "!ctags -R --c-types=+p --fields=+S *"
-        "silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
-        silent! execute "!ctags -R"
-    endif
-
-    if(executable('cscope') && has("cscope") )
-        if !filereadable("cscope.files")
-            if(g:iswindows!=1)
-                silent! execute "!find . -name '*.h' -o iname "*.hpp" -o -iname '*.s' -o -name '*.c' -o -name '*.cpp' -o -iname '*.go'> cscope.files"
-            else
-                silent! execute "!dir /s/b *.c,*.cpp,*.h,*.hpp,*.go >> cscope.files"
-            endif
-        endif
-        silent! execute "!cscope -Rbq"
-        redraw!
-        execute "normal :"
-
-        if filereadable("cscope.out")
-            execute "cs add cscope.out"
-        endif
-    endif
-endfunction
 
 func SetComment1()
     call setline(".", "// Copyright (C) ".strftime("%Y")." All rights reserved.")
@@ -506,7 +421,7 @@ vmap <Leader>a<Space> :Tabularize /
 
 " -----------------------------------------------------------------------------
 "  < quickfix 插件配置 >
-" ---------------------------------------------------------------------------"--
+" -----------------------------------------------------------------------------
 ":cc                显示详细错误信息 ( :help :cc )
 ":cp                跳到上一个错误 ( :help :cp )
 ":cn                跳到下一个错误 ( :help :cn )
@@ -518,7 +433,7 @@ nmap <leader>cw :cw 10<cr>
 
 " -----------------------------------------------------------------------------
 "  < syntastic 插件配置 >
-" ---------------------------------------------------------------------------"--
+" -----------------------------------------------------------------------------
 let g:syntastic_error_symbol='>>'
 let g:syntastic_warning_symbol='>'
 let g:syntastic_check_on_open=1
@@ -632,8 +547,8 @@ let g:indent_guides_auto_colors = 1
 " -----------------------------------------------------------------------------
 "  < ctrlsf 插件配置 >
 " -----------------------------------------------------------------------------
-let g:ctrlsf_ackprg = 'ag'
-"
+let g:ctrlsf_ackprg = 'rg' "apt install ripgrep
+
 nmap     <C-F>f <Plug>CtrlSFPrompt
 vmap     <C-F>f <Plug>CtrlSFVwordPath
 vmap     <C-F>F <Plug>CtrlSFVwordExec
@@ -682,9 +597,58 @@ map <leader>dob :DoxBlock<CR>
 " -----------------------------------------------------------------------------
 "  < ultisnips  插件配置 >
 " -----------------------------------------------------------------------------
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
+" - https://github.com/Valloric/YouCompleteMe
+" - https://github.com/nvim-lua/completion-nvim
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+" -----------------------------------------------------------------------------
+"  < gutentags  插件配置 >
+" -----------------------------------------------------------------------------
+"  :GscopeFind {querytype} {name}
+"  0 or s: Find this symbol
+"  1 or g: Find this definition
+"  2 or d: Find functions called by this function
+"  3 or c: Find functions calling this function
+"  4 or t: Find this text string
+"  6 or e: Find this egrep pattern
+"  7 or f: Find this file
+"  8 or i: Find files #including this file
+"  9 or a: Find places where this symbol is assigned a value
+"  9 or z: Find current word in ctags database
+
+" enable gtags module
+let g:gutentags_modules = ['ctags', 'gtags_cscope']
+
+" config project root markers.
+let g:gutentags_project_root = ['.root']
+
+" generate datebases in my cache directory, prevent gtags files polluting my project
+let g:gutentags_cache_dir = expand('~/.cache/tags')
+
+" change focus to quickfix window after search (optional).
+let g:gutentags_plus_switch = 1
+
+" Disable the default keymaps
+let g:gutentags_plus_nomap = 1
+
+noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
+noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
+noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
+noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
+noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
+noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
+noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
+noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 
 " =============================================================================
 "                          << 以下为常用工具配置 >>
@@ -711,68 +675,7 @@ nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nmap <F4> :YcmDiags<CR>
-" -----------------------------------------------------------------------------
-"  < cscope 工具配置 >
-" -----------------------------------------------------------------------------
-" 命令启用cscope -Rbq
-"-R: 在生成索引文件时，搜索子目录树中的代码
-"-b: 只生成索引文件，不进入cscope的界面
-"-q: 生成cscope.in.out和cscope.po.out文件，加快cscope的索引速度
-"-k: 在生成索引文件时，不搜索/usr/include目录
-"-i: 如果保存文件列表的文件名不是cscope.files时，需要加此选项告诉cscope到哪儿去找源文件列表。可以使用“-”，表示由标准输入获得文件列表。
-"-I dir: 在-I选项指出的目录中查找头文件
-"-u: 扫描所有文件，重新生成交叉索引文件
-"-C: 在搜索时忽略大小写
-"-P path: 在以相对路径表示的文件前加上的path，这样，你不用切换到你数据库文件所在的目录也可以使用它了。 用Cscope自己的话说 - "你可以把它当做是超过频的ctags"
-"使用
-"s: 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
-"g: 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
-"d: 查找本函数调用的函数
-"c: 查找调用本函数的函数
-"t: 查找指定的字符串
-"e: 查找egrep模式，相当于egrep功能，但查找速度快多了
-"f: 查找并打开文件，类似vim的find功能
-"i: 查找包含本文件的文
-if has("cscope")
-    "设定可以使用 quickfix 窗口来查看 cscope 结果
-    set cscopequickfix=s-,c-,d-,i-,t-,e-
-    "使支持用 Ctrl+]  和 Ctrl+t 快捷键在代码间跳转
-    set cscopetag
-    "如果你想反向搜索顺序设置为1
-    set csto=0
-    "在当前目录中添加任何数据库
-    if filereadable("cscope.out")
-        "出现重复加载就注销掉
-        cs add cscope.out
-        "否则添加数据库环境中所指出的
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
-    set cscopeverbose
-    "快捷键设置
-    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\><space> :cs find<space>
-endif
 
-" -----------------------------------------------------------------------------
-"  < ctags 工具配置 >
-" -----------------------------------------------------------------------------
-" 对浏览代码非常的方便,可以在函数,变量之间跳转等
-" ctags -R 命令配置
-set tags=./tags;/,~/.vimtags                            "向上级目录递归查找tags文件（好像只有在Windows下才有用）
-
-" Make tags placed in .git/tags file available in all levels of a repository
-let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-if gitroot != ''
-    let &tags = &tags . ',' . gitroot . '/.git/tags'
-endif
 " -----------------------------------------------------------------------------
 "  < gvimfullscreen 工具配置 > 请确保已安装了工具
 " -----------------------------------------------------------------------------
