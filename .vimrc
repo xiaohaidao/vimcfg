@@ -614,7 +614,7 @@ let g:UltiSnipsEditSplit="vertical"
 " -----------------------------------------------------------------------------
 "  < gutentags  插件配置 >
 " -----------------------------------------------------------------------------
-"  The ctags version is universal-catgs
+"  The ctags version is universal-ctags
 "  :GscopeFind {querytype} {name}
 "  0 or s: Find this symbol
 "  1 or g: Find this definition
