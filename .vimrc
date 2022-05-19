@@ -495,6 +495,8 @@ let g:ctrlp_extensions = ['funky']
 
 "funky
 nnoremap <Leader>fu :CtrlPFunky<Cr>
+" narrow the list down with a word under cursor
+nnoremap <Leader>uu :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
 " -----------------------------------------------------------------------------
 "  < Tagbar 插件配置 >
@@ -612,6 +614,7 @@ let g:UltiSnipsEditSplit="vertical"
 " -----------------------------------------------------------------------------
 "  < gutentags  插件配置 >
 " -----------------------------------------------------------------------------
+"  The ctags version is universal-catgs
 "  :GscopeFind {querytype} {name}
 "  0 or s: Find this symbol
 "  1 or g: Find this definition
