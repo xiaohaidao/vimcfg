@@ -149,7 +149,7 @@ Plug 'vim-syntastic/syntastic'          " 语法检查 插件
 Plug 'preservim/tagbar'                 " 编程基本信息汇览 ,tb
 Plug 'nathanaelkane/vim-indent-guides'  " 缩进显示
 Plug 'dyng/ctrlsf.vim'                  " 搜索
-Plug 'terryma/vim-multiple-cursors'     " Multiple cursor
+Plug 'mg979/vim-visual-multi'           " Multiple cursor
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}     " markdown preview on vim >= 8.1 and neovim
 Plug 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
 Plug 'ervandew/supertab'                " Super tab
@@ -561,22 +561,13 @@ nnoremap <C-F>t :CtrlSFToggle<CR>
 inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 "
 " -----------------------------------------------------------------------------
-"  < multi_cursor 插件配置 >
+"  < vim-visual-multi  插件配置 >
 " -----------------------------------------------------------------------------
-let g:multi_cursor_use_default_mapping=0
 
-" Default mapping
-let g:multi_cursor_start_word_key      = '<C-n>'
-let g:multi_cursor_select_all_word_key = '<A-n>'
-let g:multi_cursor_start_key           = 'g<C-n>'
-let g:multi_cursor_select_all_key      = 'g<A-n>'
-let g:multi_cursor_next_key            = '<C-n>'
-let g:multi_cursor_prev_key            = '<C-p>'
-let g:multi_cursor_skip_key            = '<C-x>'
-let g:multi_cursor_quit_key            = '<Esc>'
+nmap   <C-LeftMouse>         <Plug>(VM-Mouse-Cursor)
+nmap   <C-RightMouse>        <Plug>(VM-Mouse-Word)
+nmap   <M-C-RightMouse>      <Plug>(VM-Mouse-Column)
 
-nnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
-vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
 " -----------------------------------------------------------------------------
 "  < MarkDown Preview 插件配置 >
 " -----------------------------------------------------------------------------
