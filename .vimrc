@@ -576,7 +576,7 @@ imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
 nmap <silent> <F9> <Plug>MarkdownPreviewStop    " for normal mode
 imap <silent> <F9> <Plug>MarkdownPreviewStop    " for insert mode
 
-let g:mkdp_path_to_chrome = 'firefox'
+let g:mkdp_browser = ''
 " -----------------------------------------------------------------------------
 "  < Doxygen Toolkit 插件配置 >
 " -----------------------------------------------------------------------------
