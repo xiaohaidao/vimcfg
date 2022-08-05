@@ -549,7 +549,7 @@ let g:indent_guides_auto_colors = 1
 " -----------------------------------------------------------------------------
 "  < ctrlsf 插件配置 >
 " -----------------------------------------------------------------------------
-let g:ctrlsf_ackprg = 'rg' "apt install ripgrep
+let g:ctrlsf_ackprg = 'ag' "apt install ripgrep
 
 nmap     <C-F>f <Plug>CtrlSFPrompt
 vmap     <C-F>f <Plug>CtrlSFVwordPath
@@ -657,7 +657,7 @@ let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 "YouCompleteMe 通过这个cm_global_ycm_extra_conf来获得补全规则，可以如下指定，也可以每次放置在工作目录
-let g:ycm_global_ycm_extra_conf=plugPath.'YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf=plugPath.'YouCompleteMe/python/.ycm_extra_conf.py'
 set runtimepath+=plugPath.'YouCompleteMe'
 let g:ycm_server_python_interpreter = "python"
 
