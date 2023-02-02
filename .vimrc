@@ -160,6 +160,7 @@ Plug 'xiaohaidao/personal.vim'          " Personal repository
 Plug 'sheerun/vim-polyglot'             " A collection of language packs for vim
 Plug 'ludovicchabant/vim-gutentags'     " Plugin will update gtags database in background automatically
 Plug 'skywind3000/gutentags_plus'       " works with gutentags and provides seemless databases switching
+Plug 'ojroques/vim-oscyank'             " users can copy from anywhere including from remote SSH sessions.
 
 if has("Win64")
 Plug 'snakeleon/YouCompleteMe-x64', { 'dir': plugPath.'YouCompleteMe' }
