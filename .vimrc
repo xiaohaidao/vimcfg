@@ -145,7 +145,7 @@ Plug 'godlygeek/tabular'                " 通过符号对齐 ,a
 Plug 'scrooloose/nerdcommenter'         " 注释 <leader>c<space>
 Plug 'vim-airline/vim-airline'          " 状态栏 插件
 Plug 'vim-airline/vim-airline-themes'   " 状态栏 插件
-Plug 'vim-syntastic/syntastic'          " 语法检查 插件
+Plug 'dense-analysis/ale'               " 语法检查 插件
 Plug 'preservim/tagbar'                 " 编程基本信息汇览 ,tb
 Plug 'nathanaelkane/vim-indent-guides'  " 缩进显示
 Plug 'dyng/ctrlsf.vim'                  " 搜索
@@ -330,37 +330,6 @@ set noundofile                              "设置无撤销文件
 " =============================================================================
 
 " -----------------------------------------------------------------------------
-"  < auto-pairs 插件配置 >
-" -----------------------------------------------------------------------------
-" 用于括号与引号自动补全，不过会与函数原型提示插件echofunc冲突
-" 所以我就没有加入echofunc插件
-
-" -----------------------------------------------------------------------------
-"  < Surround 插件配置 >
-" -----------------------------------------------------------------------------
-"  This plugin is a tool for dealing with pairs of "surroundings." Examples of surroundings include parentheses, quotes, and HTML tags. They are closely related to what Vim refers to as text-objects. Provided are mappings to allow for removing, changing, and adding surroundings.
-"
-"Details follow on the exact semantics, but first, consider the following examples. An asterisk (*) is used to denote the cursor position.
-"
-"  Old text                  Command     New text ~
-"  "Hello *world!"           ds"         Hello world!
-"  [123+4*56]/2              cs])        (123+456)/2
-"  "Look ma, I'm *HTML!"     cs"<q>      <q>Look ma, I'm HTML!</q>
-"  if *x>3 {                 ysW(        if ( x>3 ) {
-"  my $str = *whee!;         vllllS'     my $str = 'whee!';
-"
-"For instance, if the cursor was inside "foo bar", you could type cs"' to convert the text to 'foo bar'.
-"
-"There's a lot more, check it out at :help surround
-
-" -----------------------------------------------------------------------------
-"  < NERDCommenter 插件配置 >
-" -----------------------------------------------------------------------------
-"NERDCommenter allows you to wrangle your code comments, regardless of filetype. View help :NERDCommenter or checkout my post on NERDCommenter.
-"
-"QuickStart Toggle comments using <Leader>c<space> in Visual or Normal mode.
-
-" -----------------------------------------------------------------------------
 "  < NerdTree 插件配置 >
 " -----------------------------------------------------------------------------
 "
@@ -433,24 +402,11 @@ vmap <Leader>a<Space> :Tabularize /
 nmap <leader>cw :cw 10<cr>
 
 " -----------------------------------------------------------------------------
-"  < syntastic 插件配置 >
+"  < ale 插件配置 >
 " -----------------------------------------------------------------------------
-let g:syntastic_error_symbol='>>'
-let g:syntastic_warning_symbol='>'
-let g:syntastic_check_on_open=1
-let g:syntastic_check_on_wq=0
-let g:syntastic_enable_highlighting=1
-let g:syntastic_python_checkers=['pyflakes'] " 使用pyflakes,速度比pylint快
-"let g:syntastic_javascript_checkers = ['jsl', 'jshint']
-"let g:syntastic_html_checkers=['tidy', 'jshint']
 
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_loc_list_height = 5
-
-" nnoremap <Leader>ee :Errors<cr>
-" nnoremap <Leader>sn :lnext<cr>
-" nnoremap <Leader>sp :lprevious<cr>
+" let g:ale_sign_error = '>>'
+" let g:ale_sign_warning = '>'
 
 "
 " -----------------------------------------------------------------------------
@@ -581,7 +537,7 @@ let g:mkdp_browser = ''
 " -----------------------------------------------------------------------------
 "  < Doxygen Toolkit 插件配置 >
 " -----------------------------------------------------------------------------
-let g:DoxygenToolkit_authorName="Bob Li, oxox0@qq.com"
+let g:DoxygenToolkit_authorName="Li B, oxox0@qq.com"
 let g:DoxygenToolkit_briefTag_funcName="yes"
 let g:doxygen_enhanced_color=1
 map <leader>doa :DoxAuthor<CR>
@@ -718,11 +674,3 @@ if (g:iswindows && g:isGUI)
     nmap <leader>t :call Top_window()<CR>
 endif
 
-" =============================================================================
-"                          << 以下为常用自动命令配置 >>
-" =============================================================================
-
-" 自动切换目录为当前编辑文件所在目录
-"au BufRead,BufNewFile,BufEnter * cd %:p:h
-
-" endif
