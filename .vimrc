@@ -134,40 +134,68 @@ endif
 " 以下为要安装或更新的插件，不同仓库都有（具体书写规范请参考帮助）
 " General Programming
 " {
-Plug 'jiangmiao/auto-pairs'             " 自动括号
-Plug 'tomasr/molokai'                   " 配色方案
-Plug 'altercation/vim-colors-solarized' " 配色方案
-Plug 'scrooloose/nerdtree'              " 文件浏览 <leader>e
-Plug 'tpope/vim-surround'               " 替换cs]}
-Plug 'ctrlpvim/ctrlp.vim'               " c-p查找文件
-Plug 'tacahiroy/ctrlp-funky'            " ctrlp拓展 ,fu
-Plug 'godlygeek/tabular'                " 通过符号对齐 ,a
-Plug 'scrooloose/nerdcommenter'         " 注释 <leader>c<space>
-Plug 'vim-airline/vim-airline'          " 状态栏 插件
-Plug 'vim-airline/vim-airline-themes'   " 状态栏 插件
-Plug 'dense-analysis/ale'               " 语法检查 插件
-Plug 'preservim/tagbar'                 " 编程基本信息汇览 ,tb
-Plug 'nathanaelkane/vim-indent-guides'  " 缩进显示
-Plug 'dyng/ctrlsf.vim'                  " 搜索
-Plug 'mg979/vim-visual-multi'           " Multiple cursor
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}     " markdown preview on vim >= 8.1 and neovim
-Plug 'vim-scripts/DoxygenToolkit.vim'   " Doxygen
-Plug 'ervandew/supertab'                " Super tab
-Plug 'SirVer/ultisnips'                 " Track the engine.
-Plug 'honza/vim-snippets'               " Snippets are separated from the engine
-Plug 'bronson/vim-trailing-whitespace'  " trailing whitespace to be highlighted in red.
-Plug 'xiaohaidao/personal.vim'          " Personal repository
-Plug 'sheerun/vim-polyglot'             " A collection of language packs for vim
-Plug 'ludovicchabant/vim-gutentags'     " Plugin will update gtags database in background automatically
-Plug 'skywind3000/gutentags_plus'       " works with gutentags and provides seemless databases switching
-Plug 'ojroques/vim-oscyank'             " users can copy from anywhere including from remote SSH sessions.
+" 自动括号
+Plug 'jiangmiao/auto-pairs'
+" 配色方案
+Plug 'tomasr/molokai'
+" 配色方案
+Plug 'altercation/vim-colors-solarized'
+" 文件浏览 <leader>e
+Plug 'scrooloose/nerdtree'
+" 替换cs]}
+Plug 'tpope/vim-surround'
+" c-p查找文件
+Plug 'ctrlpvim/ctrlp.vim'
+" ctrlp拓展 ,fu
+Plug 'godlygeek/tabular'
+" 通过符号对齐 ,a
+Plug 'tacahiroy/ctrlp-funky'
+" 注释 <leader>c<space>
+Plug 'scrooloose/nerdcommenter'
+" 状态栏 插件
+Plug 'vim-airline/vim-airline'
+" 状态栏 插件
+Plug 'vim-airline/vim-airline-themes'
+" 语法检查 插件
+Plug 'dense-analysis/ale'
+" 编程基本信息汇览 ,tb
+Plug 'preservim/tagbar'
+" 缩进显示
+Plug 'nathanaelkane/vim-indent-guides'
+" 搜索
+Plug 'dyng/ctrlsf.vim'
+" Multiple cursor
+Plug 'mg979/vim-visual-multi'
+" markdown preview on vim >= 8.1 and neovim
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" Doxygen
+Plug 'vim-scripts/DoxygenToolkit.vim'
+" Super tab
+Plug 'ervandew/supertab'
+" Track the engine.
+Plug 'SirVer/ultisnips'
+" Snippets are separated from the engine
+Plug 'honza/vim-snippets'
+" trailing whitespace to be highlighted in red.
+Plug 'bronson/vim-trailing-whitespace'
+" Personal repository
+Plug 'xiaohaidao/personal.vim'
+" A collection of language packs for vim
+Plug 'sheerun/vim-polyglot'
+" Plugin will update gtags database in background automatically
+Plug 'ludovicchabant/vim-gutentags'
+" works with gutentags and provides seemless databases switching
+Plug 'skywind3000/gutentags_plus'
+" users can copy from anywhere including from remote SSH sessions.
+Plug 'ojroques/vim-oscyank'
 
+" YouCompleteMe
 if has("Win64")
 Plug 'snakeleon/YouCompleteMe-x64', { 'dir': plugPath.'YouCompleteMe' }
 elseif has("Win32")
 Plug 'snakeleon/YouCompleteMe-x86', { 'dir': plugPath.'YouCompleteMe' }
 else
-Plug 'Valloric/YouCompleteMe'           " YouCompleteMe
+Plug 'Valloric/YouCompleteMe'
 endif
 " }
 
