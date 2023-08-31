@@ -188,6 +188,8 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 " users can copy from anywhere including from remote SSH sessions.
 Plug 'ojroques/vim-oscyank'
+" font size
+Plug 'schmich/vim-guifont'
 
 " YouCompleteMe
 if has("Win64")
@@ -628,6 +630,24 @@ noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
 noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
 noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
 noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
+
+" -----------------------------------------------------------------------------
+"  < vim-guifont  插件配置 >
+" -----------------------------------------------------------------------------
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=Inconsolata\ 12
+  elseif has("gui_macvim")
+    set guifont=Menlo\ Regular:h14
+  elseif has("gui_win32")
+    set guifont=Consolas:h11:cANSI
+  endif
+endif
+
+let guifontpp_size_increment=2
+let guifontpp_smaller_font_map="<C-_>"
+let guifontpp_larger_font_map="<C-=>"
+let guifontpp_original_font_map="<C-0>"
 
 " =============================================================================
 "                          << 以下为常用工具配置 >>
