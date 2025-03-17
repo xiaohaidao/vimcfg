@@ -620,7 +620,11 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 "YouCompleteMe 通过这个cm_global_ycm_extra_conf来获得补全规则，可以如下指定，也可以每次放置在工作目录
 let g:ycm_global_ycm_extra_conf=plugPath.'YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
 set runtimepath+=plugPath.'YouCompleteMe'
-let g:ycm_server_python_interpreter = "python3"
+if g:iswindows
+    let g:ycm_server_python_interpreter = "python"
+else
+    let g:ycm_server_python_interpreter = "python3"
+endif
 
 set completeopt-=preview
 let g:ycm_confirm_extra_conf=0
@@ -633,6 +637,15 @@ nnoremap <leader>gff :YcmCompleter FixIt<CR>
 nnoremap <leader>gfm :YcmCompleter Format<CR>
 nnoremap <leader>grn :YcmCompleter RefactorRename<space>
 nmap <F4> :YcmDiags<CR>
+if g:iswindows
+    let g:clangd = glob('d:\program files\llvm\bin\clangd*')
+    if empty(g:clangd)
+        let g:clangd = glob('c:\program files\llvm\bin\clangd*')
+    endif
+    if !empty(g:clangd)
+        let g:ycm_clangd_binary_path = g:clangd
+    endif
+endif
 
 " -----------------------------------------------------------------------------
 "  < gvimfullscreen 工具配置 > 请确保已安装了工具
