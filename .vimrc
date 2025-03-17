@@ -182,10 +182,6 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'xiaohaidao/personal.vim'
 " A collection of language packs for vim
 Plug 'sheerun/vim-polyglot'
-" Plugin will update gtags database in background automatically
-Plug 'ludovicchabant/vim-gutentags'
-" works with gutentags and provides seemless databases switching
-Plug 'skywind3000/gutentags_plus'
 " users can copy from anywhere including from remote SSH sessions.
 Plug 'ojroques/vim-oscyank'
 " font size
@@ -538,7 +534,7 @@ let g:indent_guides_auto_colors = 1
 " -----------------------------------------------------------------------------
 "  < ctrlsf 插件配置 >
 " -----------------------------------------------------------------------------
-let g:ctrlsf_ackprg = 'ag' "apt install ripgrep
+let g:ctrlsf_ackprg = 'ag' "apt install ripgrep/silversearcher-ag
 
 nmap     <C-F>f <Plug>CtrlSFPrompt
 vmap     <C-F>f <Plug>CtrlSFVwordPath
@@ -592,48 +588,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
 
 " -----------------------------------------------------------------------------
-"  < gutentags  插件配置 >
-" -----------------------------------------------------------------------------
-"  The ctags version is universal-ctags
-"  :GscopeFind {querytype} {name}
-"  0 or s: Find this symbol
-"  1 or g: Find this definition
-"  2 or d: Find functions called by this function
-"  3 or c: Find functions calling this function
-"  4 or t: Find this text string
-"  6 or e: Find this egrep pattern
-"  7 or f: Find this file
-"  8 or i: Find files #including this file
-"  9 or a: Find places where this symbol is assigned a value
-"  9 or z: Find current word in ctags database
-
-" enable gtags module
-let g:gutentags_modules = ['ctags', 'gtags_cscope']
-
-" config project root markers.
-let g:gutentags_project_root = ['.root']
-
-" generate datebases in my cache directory, prevent gtags files polluting my project
-let g:gutentags_cache_dir = expand('~/.cache/tags')
-
-" change focus to quickfix window after search (optional).
-let g:gutentags_plus_switch = 1
-
-" Disable the default keymaps
-let g:gutentags_plus_nomap = 1
-
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
-noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
-noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
-noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
-noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
-noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
-noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
-noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
-noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
-
-" -----------------------------------------------------------------------------
 "  < vim-guifont  插件配置 >
 " -----------------------------------------------------------------------------
 if has("gui_running")
@@ -664,9 +618,9 @@ let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 "YouCompleteMe 通过这个cm_global_ycm_extra_conf来获得补全规则，可以如下指定，也可以每次放置在工作目录
-let g:ycm_global_ycm_extra_conf=plugPath.'YouCompleteMe/python/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf=plugPath.'YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
 set runtimepath+=plugPath.'YouCompleteMe'
-let g:ycm_server_python_interpreter = "python"
+let g:ycm_server_python_interpreter = "python3"
 
 set completeopt-=preview
 let g:ycm_confirm_extra_conf=0
@@ -675,6 +629,9 @@ let g:ycm_warning_symbol = '>*'
 nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>gff :YcmCompleter FixIt<CR>
+nnoremap <leader>gfm :YcmCompleter Format<CR>
+nnoremap <leader>grn :YcmCompleter RefactorRename<space>
 nmap <F4> :YcmDiags<CR>
 
 " -----------------------------------------------------------------------------
