@@ -158,8 +158,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " 语法检查 插件
 Plug 'dense-analysis/ale'
-" 编程基本信息汇览 ,tb
-Plug 'preservim/tagbar'
 " 缩进显示
 Plug 'nathanaelkane/vim-indent-guides'
 " 搜索
@@ -185,7 +183,7 @@ Plug 'sheerun/vim-polyglot'
 " users can copy from anywhere including from remote SSH sessions.
 Plug 'ojroques/vim-oscyank'
 " font size
-Plug 'schmich/vim-guifont'
+Plug 'xiaohaidao/vim-guifont'
 " file changed show
 Plug 'mhinz/vim-signify'
 
@@ -484,17 +482,6 @@ nnoremap <Leader>fu :CtrlPFunky<Cr>
 nnoremap <Leader>uu :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
 " -----------------------------------------------------------------------------
-"  < Tagbar 插件配置 >
-" -----------------------------------------------------------------------------
-" 相对 TagList 能更好的支持面向对象
-
-" 常规模式下输入 tb 调用插件，如果有打开 TagList 窗口则先将其关闭
-nmap <leader>tb :TagbarToggle<CR>:TlistClose<CR>
-
-let g:tagbar_width=30                       "设置窗口宽度
-" let g:tagbar_left=1                         "在左侧窗口中显示
-
-" -----------------------------------------------------------------------------
 "  < vim-airline 插件配置 >
 " -----------------------------------------------------------------------------
 " Set configuration options for the statusline plugin vim-airline.
@@ -591,8 +578,9 @@ let g:UltiSnipsEditSplit="vertical"
 "  < vim-guifont  插件配置 >
 " -----------------------------------------------------------------------------
 if has("gui_running")
-  if has("gui_gtk2")
+  if has("gui_gtk")
     set guifont=Inconsolata\ 12
+    let guifontpp_fontpat_unix = '\([^ ]\+ \)\([1-9][0-9]*\)'
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
