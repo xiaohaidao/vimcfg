@@ -135,7 +135,7 @@ endif
 " General Programming
 " {
 " 自动括号
-Plug 'jiangmiao/auto-pairs'
+Plug 'LunarWatcher/auto-pairs'
 " 配色方案
 Plug 'tomasr/molokai'
 " 配色方案
