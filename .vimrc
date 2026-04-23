@@ -253,6 +253,13 @@ nmap cL :%s/\s\+$//g<CR>:noh<CR>
 " 常规模式下输入 cM 清除行尾 ^M 符号
 nmap cM :%s/\r$//g<CR>:noh<CR>
 
+" 创建tab terminal
+nmap <Leader>tt :tab terminal<CR>
+
+" OSCY复制
+nnoremap <leader>yy <Plug>OSCYankOperator
+vnoremap <leader>yy <Plug>OSCYankVisual
+
 set ignorecase                                        "搜索模式里忽略大小写
 set smartcase                                         "如果搜索模式包含大写字符，不使用 'ignorecase' 选项，只有在输入搜索模式并且打开 'ignorecase' 选项时才会使用
 " set noincsearch                                       "在输入要搜索的文字时，取消实时匹配
@@ -376,12 +383,13 @@ nmap <leader>nt :NERDTreeFind<CR>
 
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
-let NERDTreeChDirMode=0
-let NERDTreeQuitOnOpen=1
-let NERDTreeMouseMode=2
-let NERDTreeShowHidden=1
-let NERDTreeKeepTreeInNewTab=1
-let g:nerdtree_tabs_open_on_gui_startup=0
+let NERDTreeFileLines = 1
+"let NERDTreeChDirMode=0
+"let NERDTreeQuitOnOpen=0
+"let NERDTreeMouseMode=2
+"let NERDTreeShowHidden=1
+"let NERDTreeKeepTreeInNewTab=1
+"let g:nerdtree_tabs_open_on_gui_startup=0
 
 " -----------------------------------------------------------------------------
 "  < Tabularize 插件配置 >
@@ -452,6 +460,8 @@ let g:ctrlp_custom_ignore = {
 " On Windows use "dir" as fallback command.
 if g:iswindows
     let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
+elseif executable('rg')
+    let s:ctrlp_fallback = 'rg %s --nocolor -l -g ""'
 elseif executable('ag')
     let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
 elseif executable('ack-grep')
@@ -521,7 +531,7 @@ let g:indent_guides_auto_colors = 1
 " -----------------------------------------------------------------------------
 "  < ctrlsf 插件配置 >
 " -----------------------------------------------------------------------------
-let g:ctrlsf_ackprg = 'ag' "apt install ripgrep/silversearcher-ag
+let g:ctrlsf_ackprg = 'rg' "apt install ripgrep/silversearcher-ag or ripgrep
 
 nmap     <C-F>f <Plug>CtrlSFPrompt
 vmap     <C-F>f <Plug>CtrlSFVwordPath
